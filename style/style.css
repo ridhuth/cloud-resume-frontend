@@ -1,0 +1,49 @@
+body{
+    display: flex;
+    justify-content: center;
+    background-color: whitesmoke;
+}
+
+.flex_container{
+    display:flex;
+    width: 816px;
+    background-color: white;
+    padding: 50px 8.28% 50px 8.28%;
+}
+
+
+.main{
+    
+    width: 70%; 
+    height: auto;
+    padding: 0 20px 0 0;
+    
+}
+
+.side{
+    
+    width: 30%; 
+    height: auto;
+    padding: 0 0 0 20px;
+}
+
+.side > ul{
+    padding: 0;
+}
+
+.side > div >ul{
+    padding: 0;
+}
+
+
+h4{
+    color: #2079c7;
+}
+
+ul{
+    list-style-type: none;
+}
+
+#viewCount{
+    color: red;
+}
