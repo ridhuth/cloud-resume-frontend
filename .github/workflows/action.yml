@@ -18,25 +18,25 @@ jobs:
         
         steps:
             - name: Git clone the repository
-                uses: actions/checkout@v3
+              uses: actions/checkout@v3
     
             - name: configure aws credentials
-                uses: aws-actions/configure-aws-credentials@v3
-                with:
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
                 role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
                 role-duration-seconds: 900
                 aws-region: us-east-1
     
             - name: Use Terraform 1.5.7
-                uses: hashicorp/setup-terraform@v2
-                with:
+              uses: hashicorp/setup-terraform@v2
+              with:
                 terraform_version: 1.5.7
             
             # - name: Initialize Terraform
             #   run: terraform init
     
             - name: Terraform Plan
-                run: |
+              run: |
                 terraform init
                 terraform plan
             
