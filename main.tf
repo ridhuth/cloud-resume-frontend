@@ -26,7 +26,7 @@ module "distributions" {
 
   source         = "./modules/distributions"
   
-  index_html_etag = module.s3_bucket.index_html_etag != "" ? module.s3_bucket.index_html_etag : "test"
+  index_html_etag = terraform.workspace == "default" ? module.s3_bucket.index_html_etag : 0
   counter_js_etag = module.s3_bucket.counter_js_etag
   style_css_etag = module.s3_bucket.style_css_etag
 
