@@ -2,7 +2,7 @@
 
 module "s3_bucket" {
   source         = "./modules/s3-website-buckets"
-  count      = terraform.workspace == "default" ? 1 : 0
+  # count      = terraform.workspace == "default" ? 1 : 0
   
   s3_redirect_name         = "rhresume.com"
   s3_web_name              = "www.rhresume.com"
