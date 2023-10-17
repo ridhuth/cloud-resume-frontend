@@ -2,7 +2,11 @@ name: Cloud Resume Frontend
 
 run-name: Deploy to AWS by @${{ github.actor }}
 
-on: push
+on: 
+  push:
+    branches:
+      - main
+
 
 jobs:
     terraform_plan:
