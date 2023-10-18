@@ -65,7 +65,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "wwwrhresume_bucke
 }
 
 resource "aws_s3_object" "object" {
-  bucket = var.s3_web_name
+  bucket = aws_s3_bucket.wwwrhresume_bucket.id
   key    = "index.html"
   source = "index.html"
   content_type = "text/html"
@@ -75,7 +75,7 @@ resource "aws_s3_object" "object" {
 }
 
 resource "aws_s3_object" "visitor_counter_object" {
-  bucket = var.s3_web_name
+  bucket = aws_s3_bucket.wwwrhresume_bucket.id
   key    = "script/visitorCounter.js"
   source = "script/visitorCounter.js"
   content_type = "text/javascript"
@@ -86,7 +86,7 @@ resource "aws_s3_object" "visitor_counter_object" {
 }
 
 resource "aws_s3_object" "style_object" {
-  bucket = var.s3_web_name
+  bucket = aws_s3_bucket.wwwrhresume_bucket.id
   key    = "style/style.css"
   source = "style/style.css"
   content_type = "text/css"
