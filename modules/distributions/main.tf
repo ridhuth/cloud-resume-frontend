@@ -19,7 +19,7 @@ resource "aws_acm_certificate" "cert" {
 
 
 resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
-  aliases                         = ["rhresume.com"]
+  aliases                         = var.s3_redirect_dist_alias
   comment                         = null
   continuous_deployment_policy_id = null
   default_root_object             = null
@@ -46,7 +46,7 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
     realtime_log_config_arn    = null
     response_headers_policy_id = null
     smooth_streaming           = false
-    target_origin_id           = "rhresume.com.s3.us-east-1.amazonaws.com"
+    target_origin_id           = var.s3_redirect_origin_id
     trusted_key_groups         = []
     trusted_signers            = []
     viewer_protocol_policy     = "redirect-to-https"
@@ -56,7 +56,7 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
     connection_timeout       = 10
     domain_name              = "rhresume.com.s3-website-us-east-1.amazonaws.com"
     origin_access_control_id = null
-    origin_id                = "rhresume.com.s3.us-east-1.amazonaws.com"
+    origin_id                = var.s3_redirect_origin_id
     origin_path              = null
     custom_origin_config {
       http_port                = 80
@@ -116,7 +116,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     realtime_log_config_arn    = null
     response_headers_policy_id = null
     smooth_streaming           = false
-    target_origin_id           = "rhresume.com.s3.us-east-1.amazonaws.com"
+    target_origin_id           = var.s3_redirect_origin_id
     trusted_key_groups         = []
     trusted_signers            = []
     viewer_protocol_policy     = "redirect-to-https"
@@ -126,7 +126,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     connection_timeout       = 10
     domain_name              = "www.rhresume.com.s3.us-east-1.amazonaws.com"
     origin_access_control_id = null
-    origin_id                = "rhresume.com.s3.us-east-1.amazonaws.com"
+    origin_id                = var.s3_redirect_origin_id
     origin_path              = null
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.origin_access.cloudfront_access_identity_path
