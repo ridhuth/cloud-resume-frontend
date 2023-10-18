@@ -41,7 +41,7 @@ jobs:
     
             - name: Terraform Plan
               run: |
-                terraform get
+                terraform init
                 terraform workspace select -or-create=true dev
                 terraform plan
 
@@ -81,7 +81,7 @@ jobs:
     
           - name: Terraform Apply
             run: | 
-                terraform get
+                terraform init
                 terraform workspace select -or-create=true default
                 terraform apply -auto-approve
             
