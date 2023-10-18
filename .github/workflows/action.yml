@@ -42,7 +42,7 @@ jobs:
             - name: Terraform Plan
               run: |
                 terraform init
-                terraform workspace select -or-create=true dev
+                terraform workspace select -or-create=true default
                 terraform plan
 
     terraform_apply:
