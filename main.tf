@@ -26,9 +26,9 @@ module "distributions" {
 
   source         = "./modules/distributions"
   
-  index_html_etag = terraform.workspace == "default" ? module.s3_bucket.index_html_etag : 0
-  counter_js_etag = terraform.workspace == "default" ? module.s3_bucket.counter_js_etag : 0
-  style_css_etag =  terraform.workspace == "default" ? module.s3_bucket.style_css_etag : 0
+  index_html_etag = terraform.workspace == "default" ? module.s3_bucket[0].index_html_etag : 0
+  counter_js_etag = terraform.workspace == "default" ? module.s3_bucket[0].counter_js_etag : 0
+  style_css_etag =  terraform.workspace == "default" ? module.s3_bucket[0].style_css_etag : 0
   s3_redirect_dist_alias = ["rhresume.com"]
   s3_redirect_origin_id = terraform.workspace == "default" ? module.s3_bucket.s3_redirect_regional_dom_name : 0
 
