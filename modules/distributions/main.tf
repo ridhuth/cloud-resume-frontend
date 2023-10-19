@@ -1,6 +1,8 @@
 
 
 resource "aws_acm_certificate" "cert" {
+  count      = terraform.workspace == "default" ? 1 : 0
+
   certificate_authority_arn = null
   certificate_body          = null
   certificate_chain         = null
@@ -68,7 +70,8 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
     }
   }
   viewer_certificate {
-    acm_certificate_arn            = aws_acm_certificate.cert.arn
+    # acm_certificate_arn            = aws_acm_certificate.cert.arn
+    acm_certificate_arn            = var.acm_certificate_arn
     cloudfront_default_certificate = false
     iam_certificate_id             = null
     minimum_protocol_version       = "TLSv1.2_2021"
@@ -78,12 +81,12 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
 
 
 resource "aws_cloudfront_origin_access_identity" "origin_access" {
-  comment = "www.rhresume.com.s3.us-east-1.amazonaws.com"
+  comment = var.s3_origin_id
 }
 
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
-  aliases                         = ["www.rhresume.com"]
+  aliases                         = var.s3_dist_alias
   comment                         = null
   continuous_deployment_policy_id = null
   default_root_object             = "index.html"
@@ -118,7 +121,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     connection_attempts      = 3
     connection_timeout       = 10
-    domain_name              = "www.rhresume.com.s3.us-east-1.amazonaws.com"
+    domain_name              = var.s3_origin_id
     origin_access_control_id = null
     origin_id                = var.s3_redirect_origin_id
     origin_path              = null
@@ -133,10 +136,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
   viewer_certificate {
-    acm_certificate_arn            = aws_acm_certificate.cert.arn
-    cloudfront_default_certificate = false
+    acm_certificate_arn            = aws_acm_certificate.cert[0].arn
+    cloudfront_default_certificate = var.cloudfront_default_certificate
     iam_certificate_id             = null
-    minimum_protocol_version       = "TLSv1.2_2021"
+    minimum_protocol_version       = var.minimum_protocol_version
     ssl_support_method             = "sni-only"
   }
 }
