@@ -31,6 +31,20 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "rhresume_bucket_e
   }
 }
 
+resource "aws_s3_bucket_website_configuration" "s3_redirect_domain" {
+  bucket                = "rhresume.com"
+  redirect_all_requests_to {
+    host_name = "www.rhresume.com"
+    protocol  = "https"
+  }
+}
+
+
+
+
+
+
+
 resource "aws_s3_bucket" "wwwrhresume_bucket" {
   bucket              = var.s3_web_name
   bucket_prefix       = null

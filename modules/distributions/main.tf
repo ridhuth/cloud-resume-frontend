@@ -20,9 +20,6 @@ resource "aws_acm_certificate" "cert" {
 
 resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
   aliases                         = var.s3_redirect_dist_alias
-  comment                         = null
-  continuous_deployment_policy_id = null
-  default_root_object             = null
   enabled                         = true
   http_version                    = "http2"
   is_ipv6_enabled                 = true
@@ -42,9 +39,6 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
     field_level_encryption_id  = null
     max_ttl                    = 0
     min_ttl                    = 0
-    origin_request_policy_id   = null
-    realtime_log_config_arn    = null
-    response_headers_policy_id = null
     smooth_streaming           = false
     target_origin_id           = var.s3_redirect_origin_id
     trusted_key_groups         = []
@@ -54,7 +48,7 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
   origin {
     connection_attempts      = 3
     connection_timeout       = 10
-    domain_name              = "rhresume.com.s3-website-us-east-1.amazonaws.com"
+    domain_name              = var.s3_redirect_website_endpoint
     origin_access_control_id = null
     origin_id                = var.s3_redirect_origin_id
     origin_path              = null
