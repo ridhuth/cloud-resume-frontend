@@ -70,11 +70,10 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
     }
   }
   viewer_certificate {
-    # acm_certificate_arn            = aws_acm_certificate.cert.arn
     acm_certificate_arn            = var.acm_certificate_arn
-    cloudfront_default_certificate = false
+    cloudfront_default_certificate = var.cloudfront_default_certificate
     iam_certificate_id             = null
-    minimum_protocol_version       = "TLSv1.2_2021"
+    minimum_protocol_version       = var.minimum_protocol_version
     ssl_support_method             = "sni-only"
   }
 }
@@ -136,12 +135,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
   viewer_certificate {
-    acm_certificate_arn            = aws_acm_certificate.cert[0].arn
+    acm_certificate_arn            = var.acm_certificate_arn
     cloudfront_default_certificate = var.cloudfront_default_certificate
     iam_certificate_id             = null
     minimum_protocol_version       = var.minimum_protocol_version
     ssl_support_method             = "sni-only"
   }
+  
 }
 
 

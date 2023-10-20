@@ -1,5 +1,5 @@
 output "acm_certificate_arn" {
-  value       = aws_acm_certificate.cert[0].arn
+  value       = terraform.workspace == "default" ? aws_acm_certificate.cert[0].arn : null
   description = "acm_certificate_arn"
 }
 
