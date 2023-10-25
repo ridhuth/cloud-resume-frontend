@@ -8,6 +8,8 @@ module "s3_bucket" {
   
   s3_redirect_name         = "rhresume.com"
   s3_web_name              = "www.rhresume.com"
+  s3_redirect_host_name    = "www.rhresume.com"
+  origin_access_identity   = module.distributions[0].origin_access_identity
 
 }
 
@@ -37,8 +39,10 @@ module "s3_bucket_dev" {
 
   source         = "./modules/s3-website-buckets"
 
-  s3_redirect_name         = "rhresume.com-${terraform.workspace}"
-  s3_web_name              = "www.rhresume.com-${terraform.workspace}"
+  s3_redirect_name         = "rhresume-${terraform.workspace}.com"
+  s3_web_name              = "www.rhresume-${terraform.workspace}.com"
+  s3_redirect_host_name    = "d7dqdmvrp7o46.cloudfront.net"
+  origin_access_identity   = module.distributions_dev[0].origin_access_identity
 
 }
 
@@ -67,8 +71,12 @@ module "actions_role" {
 
   source         = "./modules/iam_resources"
     
-
 }
+
+
+
+
+
 
 
 

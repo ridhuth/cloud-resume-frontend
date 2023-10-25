@@ -8,3 +8,13 @@ variable "s3_web_name" {
   type = string
 }
 
+variable "s3_redirect_host_name" {
+  description="Redirect requests to another bucket or domain."
+  type = string
+}
+
+variable "origin_access_identity" {
+  description="origin access identity"
+  type = string
+}
+
