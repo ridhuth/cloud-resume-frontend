@@ -1,4 +1,14 @@
+provider "aws" {
+  alias  = "dev"
+  profile = "dev"
+  region = "us-east-1"
+}
 
+provider "aws" {
+  alias  = "global"
+  profile = "global"
+  region = "us-east-1"
+}
 
 module "s3_bucket" {
   count      = terraform.workspace == "default" ? 1 : 0
@@ -66,12 +76,64 @@ module "distributions_dev" {
 
 }
 
+data "aws_caller_identity" "dev" {
+  provider = aws.dev
+}
+
+data "aws_caller_identity" "global" {
+  provider = aws.global
+}
+
+
 module "actions_role" {
   count      = terraform.workspace == "default" ? 1 : 0
+
+  source         = "./modules/iam_resources/github_oidc" 
+}
+
+/*
+module "cross_account_role" {
+  count      = terraform.workspace == "default" ? 1 : 0
+
+  source         = "./modules/iam_resources/cross_account" 
+  dev_account_id = "${data.aws_caller_identity.dev.account_id}"
+  global_account_id = "${data.aws_caller_identity.global.account_id}"
+  
+}
+*/
+
+
+/*
+module "actions_role_global" {
+  count      = terraform.workspace == "global" ? 1 : 0
+
+  source         = "./modules/iam_resources/assumable_role" 
+  dev_account_id = "${data.aws_caller_identity.dev.account_id}"
+  global_account_id = "${data.aws_caller_identity.global.account_id}"
+  providers = {
+    aws.global = aws.global
+    aws.dev = aws.dev
+  }
+
+}
+*/
+
+
+
+/*
+module "actions_role_prod" {
+  count      = terraform.workspace == "prod" ? 1 : 0
 
   source         = "./modules/iam_resources"
     
 }
+*/
+
+
+
+
+
+
 
 
 

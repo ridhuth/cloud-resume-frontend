@@ -1,13 +1,16 @@
+### MANAGED WITH BACKEND STATE ###
 /*
 module "iam_github_oidc_provider" {
+  count     = terraform.workspace != "dev" ? 1 : 0
   source    = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-provider"
   version = "5.30.0"
 
   tags = {
-    Environment = "dev"
+    Environment = "${terraform.workspace}"
   }
 }
 */
+
 
 module "iam_github_oidc_role" {
   source    = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-role"
@@ -23,7 +26,7 @@ module "iam_github_oidc_role" {
   }
 
   tags = {
-    Environment = "dev"
+    Environment = "${terraform.workspace}"
   }
 }
 
@@ -69,6 +72,6 @@ resource "aws_iam_policy" "additional" {
   })
 
   tags = {
-    Environment = "dev"
+    Environment = "${terraform.workspace}"
   }
 }
