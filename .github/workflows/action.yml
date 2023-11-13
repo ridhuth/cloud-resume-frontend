@@ -35,13 +35,22 @@ jobs:
               uses: hashicorp/setup-terraform@v2
               with:
                 terraform_version: 1.5.7
-            
-            # - name: Initialize Terraform
-            #   run: terraform init
     
-            - name: Terraform Plan
+            - name: Terraform init
               run: |
                 terraform init
+                # terraform workspace select -or-create=true dev
+                # terraform plan
+
+            - name: configure aws credentials
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+                role-duration-seconds: 900
+                aws-region: us-east-1                
+            
+            - name: Terraform plan
+              run : |
                 terraform workspace select -or-create=true dev
                 terraform plan
 
