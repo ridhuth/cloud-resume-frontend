@@ -34,9 +34,9 @@ jobs:
 
             - name: export credentials
               run: |
-                export AWS_ACCESS_KEY_ID="${steps.creds.outputs.aws-access-key-id}"
-                export AWS_SECRET_ACCESS_KEY="${steps.creds.outputs.aws-secret-access-key}"
-                export AWS_SESSION_TOKEN="${steps.creds.outputs.aws-session-token}" 
+                export AWS_ACCESS_KEY_ID="${{ steps.creds.outputs.aws-access-key-id }}"
+                export AWS_SECRET_ACCESS_KEY="${{ steps.creds.outputs.aws-secret-access-key }}"
+                export AWS_SESSION_TOKEN="${{ steps.creds.outputs.aws-session-token }}" 
                 export AWS_PROFILE="global"
     
             - name: Use Terraform 1.5.7
