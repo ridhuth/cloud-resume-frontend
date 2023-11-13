@@ -88,7 +88,18 @@ data "aws_caller_identity" "global" {
 module "actions_role" {
   count      = terraform.workspace == "default" ? 1 : 0
 
-  source         = "./modules/iam_resources/github_oidc" 
+  source     = "./modules/iam_resources/github_oidc" 
+ 
+}
+
+module "actions_role_global" {
+  count      = terraform.workspace == "global" ? 1 : 0
+
+  source     = "./modules/iam_resources/github_oidc" 
+  providers = {
+    aws = aws.global
+  }
+ 
 }
 
 /*
