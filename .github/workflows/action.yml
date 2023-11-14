@@ -31,6 +31,7 @@ jobs:
                 role-to-assume: ${{ secrets.ROLE_TO_ASSUME_GLOBAL }}
                 role-duration-seconds: 900
                 aws-region: us-east-1
+                output-credentials: true
             
             - name: Add global profile credentials to ~/.aws/credentials
               run: |
