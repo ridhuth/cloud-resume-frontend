@@ -34,7 +34,7 @@ jobs:
             
             - name: Add global profile credentials to ~/.aws/credentials
               run: |
-                aws configure set aws_access_key_id ${{ steps.creds.outputs.aws-access-key-id }} --profile global
+                aws configure set profile.global.aws_access_key_id ${{ steps.creds.outputs.aws-access-key-id }}
                 aws configure set aws_secret_access_key ${{ steps.creds.outputs.aws-secret-access-key }} --profile global
                 aws configure set aws_session_token ${{ steps.creds.outputs.aws-session-token }} --profile global
             
