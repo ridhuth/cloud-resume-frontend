@@ -52,10 +52,7 @@ jobs:
               run: |
                 aws configure set aws_access_key_id ${{ steps.dev_creds.outputs.aws-access-key-id }} --profile dev
                 aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile dev
-                aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile dev
-                cat ~/.aws/credentials
-                aws configure list-profiles
-
+                aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile dev                
     
             - name: Use Terraform 1.5.7
               uses: hashicorp/setup-terraform@v2
@@ -65,20 +62,10 @@ jobs:
             - name: Terraform init
               run: |
                 terraform init
+                aws configure list-profiles
                 terraform workspace select -or-create=true dev
                 terraform plan
 
-            # - name: configure aws credentials
-            #   uses: aws-actions/configure-aws-credentials@v3
-            #   with:
-            #     role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-            #     role-duration-seconds: 900
-            #     aws-region: us-east-1                
-            
-            # - name: Terraform plan
-            #   run : |
-            #     terraform workspace select -or-create=true dev
-            #     terraform plan
 
     terraform_apply:
         needs: ['terraform_plan']
