@@ -46,6 +46,7 @@ jobs:
                 role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
                 role-duration-seconds: 900
                 aws-region: us-east-1
+                output-credentials: true
             
             - name: Add dev profile credentials to ~/.aws/credentials
               run: |
