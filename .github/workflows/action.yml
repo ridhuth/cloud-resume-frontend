@@ -54,6 +54,7 @@ jobs:
                 aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile dev
                 aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile dev
                 cat ~/.aws/credentials
+                aws configure list-profiles
 
     
             - name: Use Terraform 1.5.7
