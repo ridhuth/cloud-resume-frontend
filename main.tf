@@ -10,6 +10,7 @@ provider "aws" {
   region = "us-east-1"
 }
 
+/*
 module "s3_bucket" {
   count      = terraform.workspace == "default" ? 1 : 0
 
@@ -43,6 +44,7 @@ module "distributions" {
   minimum_protocol_version = "TLSv1.2_2021"
 
 }
+*/
 
 module "s3_bucket_dev" {
   count      = terraform.workspace == "dev" ? 1 : 0
