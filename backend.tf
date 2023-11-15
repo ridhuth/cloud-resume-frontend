@@ -5,7 +5,7 @@ terraform {
     region         = "us-east-1"
     dynamodb_table = "rhresume_frontend_state_global"
     encrypt        = true
-    profile        = "test"
+    profile        = "global"
   }
 }
 
