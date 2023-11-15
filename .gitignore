@@ -35,3 +35,6 @@ terraform.rc
 
 # Ignore remote_state files
 remote_state/
+
+# Ignore backend file... will be dynamically created as part of workflow
+# backend.tf
