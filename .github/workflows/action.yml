@@ -23,9 +23,7 @@ jobs:
         steps:
             - name: Git clone the repository
               uses: actions/checkout@v3
-    
-
-            
+                
             - name: configure aws credentials
               id: dev_creds
               uses: aws-actions/configure-aws-credentials@v3
@@ -66,7 +64,8 @@ jobs:
                 export TF_LOG=DEBUG
                 export TF_LOG_PATH=log.txt
                 terraform init
-                cat log.txt
+                # cat log.txt
+                echo ${{ steps.dev_creds.outputs.aws-account-id }}
                 
 
             - name: Terraform plan
