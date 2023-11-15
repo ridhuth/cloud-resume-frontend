@@ -61,10 +61,16 @@ jobs:
     
             - name: Terraform init
               run: |
+                export TF_LOG=ERROR
+                export TF_LOG_PATH=log.txt
                 terraform init
-                aws configure list-profiles
                 terraform workspace select -or-create=true dev
                 terraform plan
+              continue-on-error: true
+
+            - name: Error Message
+              run: |    
+                cat log.txt
 
 
     terraform_apply:
