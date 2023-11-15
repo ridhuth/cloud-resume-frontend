@@ -66,11 +66,9 @@ jobs:
                 terraform init
                 terraform workspace select -or-create=true dev
                 terraform plan
+                cat log.txt
               continue-on-error: true
 
-            - name: Error Message
-              run: |    
-                cat log.txt
 
 
     terraform_apply:
