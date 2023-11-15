@@ -64,12 +64,13 @@ jobs:
                 export TF_LOG=DEBUG
                 export TF_LOG_PATH=log.txt
                 terraform init
+                cat log.txt
+
+            - name: Terraform plan
+              run: |
                 terraform workspace select -or-create=true dev
                 terraform plan
-                cat log.txt
-              continue-on-error: true
-
-
+              
 
     terraform_apply:
         needs: ['terraform_plan']
