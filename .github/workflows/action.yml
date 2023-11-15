@@ -65,7 +65,7 @@ jobs:
                 export TF_LOG_PATH=log.txt
                 terraform init
                 # cat log.txt
-                cat ~/.aws/config
+                
 
             - name: Terraform plan
               run: |
