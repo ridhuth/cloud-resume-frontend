@@ -168,6 +168,7 @@ jobs:
               run: | 
                   terraform init
                   terraform workspace select -or-create=true default
-                  terraform apply -auto-approve
+                  terraform state push errored.tfstate
+                  # terraform apply -auto-approve
             
         
