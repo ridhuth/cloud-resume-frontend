@@ -24,20 +24,6 @@ jobs:
             - name: Git clone the repository
               uses: actions/checkout@v3
                 
-            - name: configure aws credentials
-              id: dev_creds
-              uses: aws-actions/configure-aws-credentials@v3
-              with:
-                role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-                role-duration-seconds: 900
-                aws-region: us-east-1
-                output-credentials: true
-            
-            - name: Add dev profile credentials to ~/.aws/credentials
-              run: |
-                aws configure set aws_access_key_id ${{ steps.dev_creds.outputs.aws-access-key-id }} --profile dev
-                aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile dev
-                aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile dev  
 
             - name: configure aws credentials
               id: creds
@@ -52,7 +38,22 @@ jobs:
               run: |
                 aws configure set aws_access_key_id ${{ steps.creds.outputs.aws-access-key-id }} --profile global
                 aws configure set aws_secret_access_key ${{ steps.creds.outputs.aws-secret-access-key }} --profile global
-                aws configure set aws_session_token ${{ steps.creds.outputs.aws-session-token }} --profile global                              
+                aws configure set aws_session_token ${{ steps.creds.outputs.aws-session-token }} --profile global    
+
+            - name: configure aws credentials
+              id: dev_creds
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+                role-duration-seconds: 900
+                aws-region: us-east-1
+                output-credentials: true
+            
+            - name: Add dev profile credentials to ~/.aws/credentials
+              run: |
+                aws configure set aws_access_key_id ${{ steps.dev_creds.outputs.aws-access-key-id }} --profile dev
+                aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile dev
+                aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile dev                                           
     
             - name: Use Terraform 1.5.7
               uses: hashicorp/setup-terraform@v2
@@ -65,7 +66,6 @@ jobs:
                 export TF_LOG_PATH=log.txt
                 terraform init
                 # cat log.txt
-                echo ${{ steps.dev_creds.outputs.aws-account-id }}
                 
 
             - name: Terraform plan
