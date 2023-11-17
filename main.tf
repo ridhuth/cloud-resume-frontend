@@ -132,7 +132,6 @@ module "actions_role_global" {
 */
 
 
-
 /*
 module "actions_role_prod" {
   count      = terraform.workspace == "prod" ? 1 : 0
