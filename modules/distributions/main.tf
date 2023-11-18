@@ -1,7 +1,7 @@
 
 
 resource "aws_acm_certificate" "cert" {
-  count      = terraform.workspace == "default" ? 1 : 0
+  count      = terraform.workspace == "prod" ? 1 : 0
 
   certificate_authority_arn = null
   certificate_body          = null

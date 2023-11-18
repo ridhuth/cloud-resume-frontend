@@ -3,7 +3,7 @@
 ### MANAGED WITH BACKEND STATE FOR DEV ACCOUNT ###
 
 module "iam_github_oidc_provider" {
-  count     = terraform.workspace == "global" ? 1 : 0
+  count     = terraform.workspace != "dev" ? 1 : 0
   source    = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-provider"
   version = "5.30.0"
 
