@@ -3,7 +3,7 @@ name: Cloud Resume Frontend
 run-name: Deploy to AWS by @${{ github.actor }}
 
 on: 
-  push:
+  pull_request:
     branches:
       - main
 
@@ -23,8 +23,9 @@ jobs:
         steps:
             - name: Git clone the repository
               uses: actions/checkout@v3
+              with:
+                ref: dev
                 
-
             - name: configure global aws credentials
               id: creds
               uses: aws-actions/configure-aws-credentials@v3
@@ -54,21 +55,6 @@ jobs:
                 aws configure set aws_access_key_id ${{ steps.dev_creds.outputs.aws-access-key-id }} --profile dev
                 aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile dev
                 aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile dev 
-
-            - name: configure prod aws credentials
-              id: prod_creds
-              uses: aws-actions/configure-aws-credentials@v3
-              with:
-                role-to-assume: ${{ secrets.ROLE_TO_ASSUME_PROD }}
-                role-duration-seconds: 3600
-                aws-region: us-east-1
-                output-credentials: true
-          
-            - name: Add prod profile credentials to ~/.aws/credentials
-              run: |
-                aws configure set aws_access_key_id ${{ steps.prod_creds.outputs.aws-access-key-id }} --profile prod
-                aws configure set aws_secret_access_key ${{ steps.prod_creds.outputs.aws-secret-access-key }} --profile prod
-                aws configure set aws_session_token ${{ steps.prod_creds.outputs.aws-session-token }} --profile prod
               
             - name: Create Backend.tf
               run: |
@@ -112,7 +98,7 @@ jobs:
     
         runs-on: ubuntu-latest
     
-        environment: 'prod'
+        environment: 'dev'
     
         defaults:
             run:
@@ -125,6 +111,8 @@ jobs:
         steps:
             - name: Git clone the repository
               uses: actions/checkout@v3
+              with:
+                ref: dev
       
             - name: configure aws credentials
               id: creds
@@ -155,21 +143,6 @@ jobs:
                 aws configure set aws_access_key_id ${{ steps.dev_creds.outputs.aws-access-key-id }} --profile dev
                 aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile dev
                 aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile dev 
-
-            - name: configure prod aws credentials
-              id: prod_creds
-              uses: aws-actions/configure-aws-credentials@v3
-              with:
-                role-to-assume: ${{ secrets.ROLE_TO_ASSUME_PROD }}
-                role-duration-seconds: 3600
-                aws-region: us-east-1
-                output-credentials: true
-        
-            - name: Add prod profile credentials to ~/.aws/credentials
-              run: |
-                aws configure set aws_access_key_id ${{ steps.prod_creds.outputs.aws-access-key-id }} --profile prod
-                aws configure set aws_secret_access_key ${{ steps.prod_creds.outputs.aws-secret-access-key }} --profile prod
-                aws configure set aws_session_token ${{ steps.prod_creds.outputs.aws-session-token }} --profile prod
 
             - name: Create Backend.tf
               run: |
