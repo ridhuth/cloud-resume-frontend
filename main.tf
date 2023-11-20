@@ -22,7 +22,6 @@ module "s3_bucket_prod" {
 
   source         = "./modules/s3-website-buckets"
 
-  
   s3_redirect_name         = "rhresume.com"
   s3_web_name              = "www.rhresume.com"
   s3_redirect_host_name    = "www.rhresume.com"
