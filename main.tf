@@ -36,7 +36,6 @@ module "distributions_prod" {
 
   source         = "./modules/distributions"
   
-  # index_html_etag = terraform.workspace == "prod" ? module.s3_bucket_prod[0].index_html_etag : 0
   index_html_etag = module.s3_bucket_prod[0].index_html_etag
   counter_js_etag = module.s3_bucket_prod[0].counter_js_etag
   style_css_etag =  module.s3_bucket_prod[0].style_css_etag
