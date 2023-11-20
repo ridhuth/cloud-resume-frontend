@@ -89,7 +89,7 @@ jobs:
 
             - name: Terraform plan
               run: |
-                terraform workspace select -or-create=true prod
+                terraform workspace select -or-create=true dev
                 terraform plan
               
 
@@ -170,7 +170,7 @@ jobs:
             - name: Terraform Apply
               run: | 
                   terraform init
-                  terraform workspace select -or-create=true prod
+                  terraform workspace select -or-create=true dev
                   terraform apply -auto-approve
             
         
