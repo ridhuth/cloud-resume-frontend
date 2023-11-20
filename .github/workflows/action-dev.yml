@@ -40,6 +40,21 @@ jobs:
                 aws configure set aws_access_key_id ${{ steps.creds.outputs.aws-access-key-id }} --profile global
                 aws configure set aws_secret_access_key ${{ steps.creds.outputs.aws-secret-access-key }} --profile global
                 aws configure set aws_session_token ${{ steps.creds.outputs.aws-session-token }} --profile global    
+            
+            - name: configure prod aws credentials
+              id: prod_creds
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                role-to-assume: ${{ secrets.ROLE_TO_ASSUME_PROD }}
+                role-duration-seconds: 3600
+                aws-region: us-east-1
+                output-credentials: true
+          
+            - name: Add prod profile credentials to ~/.aws/credentials
+              run: |
+                aws configure set aws_access_key_id ${{ steps.prod_creds.outputs.aws-access-key-id }} --profile prod
+                aws configure set aws_secret_access_key ${{ steps.prod_creds.outputs.aws-secret-access-key }} --profile prod
+                aws configure set aws_session_token ${{ steps.prod_creds.outputs.aws-session-token }} --profile prod 
 
             - name: configure dev aws credentials
               id: dev_creds
@@ -127,7 +142,22 @@ jobs:
               run: |
                 aws configure set aws_access_key_id ${{ steps.creds.outputs.aws-access-key-id }} --profile global
                 aws configure set aws_secret_access_key ${{ steps.creds.outputs.aws-secret-access-key }} --profile global
-                aws configure set aws_session_token ${{ steps.creds.outputs.aws-session-token }} --profile global    
+                aws configure set aws_session_token ${{ steps.creds.outputs.aws-session-token }} --profile global   
+
+            - name: configure prod aws credentials
+              id: prod_creds
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                role-to-assume: ${{ secrets.ROLE_TO_ASSUME_PROD }}
+                role-duration-seconds: 3600
+                aws-region: us-east-1
+                output-credentials: true
+        
+            - name: Add prod profile credentials to ~/.aws/credentials
+              run: |
+                aws configure set aws_access_key_id ${{ steps.prod_creds.outputs.aws-access-key-id }} --profile prod
+                aws configure set aws_secret_access_key ${{ steps.prod_creds.outputs.aws-secret-access-key }} --profile prod
+                aws configure set aws_session_token ${{ steps.prod_creds.outputs.aws-session-token }} --profile prod                 
 
             - name: configure aws credentials
               id: dev_creds
