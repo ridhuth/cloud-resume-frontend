@@ -5,7 +5,7 @@ run-name: Deploy to AWS by @${{ github.actor }}
 on: 
   push:
     branches:
-      - main
+      - none
 
 
 jobs:
