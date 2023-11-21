@@ -16,6 +16,14 @@ provider "aws" {
   region = "us-east-1"
 }
 
+data "aws_caller_identity" "global" {
+  provider = aws.global
+}
+
+data "aws_caller_identity" "dev" {
+  provider = aws.dev
+}
+
 
 module "s3_bucket_prod" {
   count      = terraform.workspace == "prod" ? 1 : 0
@@ -50,15 +58,28 @@ module "distributions_prod" {
 
 }
 
+module "actions_role_prod" {
+  count      = terraform.workspace == "prod" ? 1 : 0
+
+  source     = "./modules/iam_resources/github_oidc" 
+  providers = {
+    aws = aws.prod
+  }
+ 
+}
+
 
 module "s3_bucket_dev" {
   count      = terraform.workspace == "dev" ? 1 : 0
+
+  
 
   source         = "./modules/s3-website-buckets"
 
   s3_redirect_name         = "rhresume-${terraform.workspace}.com"
   s3_web_name              = "www.rhresume-${terraform.workspace}.com"
-  s3_redirect_host_name    = "d7dqdmvrp7o46.cloudfront.net"
+  # s3_redirect_host_name    = "d7dqdmvrp7o46.cloudfront.net"
+  s3_redirect_host_name    = module.distributions_dev[0].distribution_domain
   origin_access_identity   = module.distributions_dev[0].origin_access_identity
 
 }
@@ -83,22 +104,13 @@ module "distributions_dev" {
 
 }
 
-data "aws_caller_identity" "dev" {
-  provider = aws.dev
-}
-
-data "aws_caller_identity" "global" {
-  provider = aws.global
-}
-
-
-
 module "actions_role" {
   count      = terraform.workspace == "dev" ? 1 : 0
 
   source     = "./modules/iam_resources/github_oidc" 
  
 }
+
 
 
 module "actions_role_global" {
@@ -111,15 +123,7 @@ module "actions_role_global" {
  
 }
 
-module "actions_role_prod" {
-  count      = terraform.workspace == "prod" ? 1 : 0
 
-  source     = "./modules/iam_resources/github_oidc" 
-  providers = {
-    aws = aws.prod
-  }
- 
-}
 
 /*
 module "cross_account_role" {
