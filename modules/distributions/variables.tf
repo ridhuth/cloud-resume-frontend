@@ -41,6 +41,11 @@ variable "acm_certificate_arn" {
   type = string
 }
 
+variable "ssl_support_method" {
+  description = "ssl_support_method"
+  type = string
+}
+
 variable "cloudfront_default_certificate" {
   description = "Users to use HTTPS viewing with cloudfront domain"
   type = bool

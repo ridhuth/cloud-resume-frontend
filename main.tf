@@ -54,6 +54,7 @@ module "distributions_prod" {
   s3_origin_id = module.s3_bucket_prod[0].s3_regional_dom_name
   acm_certificate_arn = module.distributions_prod[0].acm_certificate_arn
   cloudfront_default_certificate = false
+  ssl_support_method = "sni-only"
   minimum_protocol_version = "TLSv1.2_2021"
 
 }
@@ -100,6 +101,7 @@ module "distributions_dev" {
   s3_origin_id = module.s3_bucket_dev[0].s3_regional_dom_name
   acm_certificate_arn = null
   cloudfront_default_certificate = true
+  ssl_support_method = null
   minimum_protocol_version = null
 
 }

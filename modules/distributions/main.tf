@@ -74,7 +74,7 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
     cloudfront_default_certificate = var.cloudfront_default_certificate
     iam_certificate_id             = null
     minimum_protocol_version       = var.minimum_protocol_version
-    ssl_support_method             = "sni-only"
+    ssl_support_method             = var.ssl_support_method
   }
 }
 
@@ -139,7 +139,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     cloudfront_default_certificate = var.cloudfront_default_certificate
     iam_certificate_id             = null
     minimum_protocol_version       = var.minimum_protocol_version
-    ssl_support_method             = "sni-only"
+    ssl_support_method             = var.ssl_support_method
   }
   
 }
