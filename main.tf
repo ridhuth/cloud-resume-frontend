@@ -24,13 +24,12 @@ data "aws_caller_identity" "dev" {
   provider = aws.dev
 }
 
-/*
-locals {
-  pull_requests = toset([
-
-  ])
+variable "pull_requests" {
+  description = "list of open pull_requests."
+  type        = list(number)
 }
-*/
+
+
 
 
 module "s3_bucket_dev" {
