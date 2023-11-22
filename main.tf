@@ -44,8 +44,8 @@ module "s3_bucket_dev" {
   
   source         = "./modules/s3-website-buckets"
 
-  s3_redirect_name         = "rhresume-${terraform.workspace}.com"
-  s3_web_name              = "www.rhresume-${terraform.workspace}.com"
+  s3_redirect_name         = "rhresume-${terraform.workspace}-${each.key}.com"
+  s3_web_name              = "www.rhresume-${terraform.workspace}-${each.key}.com"
   s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
   origin_access_identity   = module.distributions_dev[each.key].origin_access_identity
 
