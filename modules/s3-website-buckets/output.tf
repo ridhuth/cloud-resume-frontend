@@ -33,5 +33,5 @@ output "s3_bucket_name" {
 }
 
 output "s3_redirect_bucket_name" {
-  value = aws_s3_bucket.rhresume_bucket..name
+  value = aws_s3_bucket.rhresume_bucket.name
 }
