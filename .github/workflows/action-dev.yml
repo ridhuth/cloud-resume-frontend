@@ -28,6 +28,8 @@ jobs:
             
             - id: pull_request_list
               name: create open pull_request list
+              env:
+                GH_TOKEN: ${{ github.token }}
               run: |
                 pull_request_list=$(gh pr list --state open --jq 'map(.number)' --json number)
                 echo "$pull_request_list"
