@@ -24,6 +24,28 @@ data "aws_caller_identity" "dev" {
   provider = aws.dev
 }
 
+/*
+locals {
+  pull_requests = toset([
+
+  ])
+}
+*/
+
+
+module "s3_bucket_dev" {
+  # count      = terraform.workspace == "dev" ? 1 : 0
+  # for_each   = terraform.workspace == "dev" ? toset(["request 1","request 2"]) : 1
+  for_each   = terraform.workspace == "dev" ? toset(${{ steps.pull_request_list.outputs.pull_requests }}) : 1
+  
+  source         = "./modules/s3-website-buckets"
+
+  s3_redirect_name         = "rhresume-${terraform.workspace}.com"
+  s3_web_name              = "www.rhresume-${terraform.workspace}.com"
+  s3_redirect_host_name    = module.distributions_dev[0].distribution_domain
+  origin_access_identity   = module.distributions_dev[0].origin_access_identity
+
+}
 
 module "s3_bucket_prod" {
   count      = terraform.workspace == "prod" ? 1 : 0
@@ -38,6 +60,27 @@ module "s3_bucket_prod" {
 
 }
 
+
+module "distributions_dev" {
+  # count      = terraform.workspace == "dev" ? 1 : 0
+  for_each   = terraform.workspace == "dev" ? toset(${{ steps.pull_request_list.outputs.pull_requests }}) : 1
+
+  source         = "./modules/distributions"
+  
+  index_html_etag = module.s3_bucket_dev[0].index_html_etag
+  counter_js_etag = module.s3_bucket_dev[0].counter_js_etag
+  style_css_etag =  module.s3_bucket_dev[0].style_css_etag
+  s3_dist_alias = null
+  s3_redirect_dist_alias = null
+  s3_redirect_origin_id = module.s3_bucket_dev[0].s3_redirect_regional_dom_name
+  s3_redirect_website_endpoint = module.s3_bucket_dev[0].s3_redirect_website_endpoint
+  s3_origin_id = module.s3_bucket_dev[0].s3_regional_dom_name
+  acm_certificate_arn = null
+  cloudfront_default_certificate = true
+  ssl_support_method = null
+  minimum_protocol_version = null
+
+}
 
 module "distributions_prod" {
   count      = terraform.workspace == "prod" ? 1 : 0
@@ -59,6 +102,19 @@ module "distributions_prod" {
 
 }
 
+
+
+
+### ONE OIDC ACTION ROLE PER ACCOUNT ###
+########################################
+
+module "actions_role" {
+  count      = terraform.workspace == "dev" ? 1 : 0
+
+  source     = "./modules/iam_resources/github_oidc" 
+ 
+}
+
 module "actions_role_prod" {
   count      = terraform.workspace == "prod" ? 1 : 0
 
@@ -70,51 +126,6 @@ module "actions_role_prod" {
 }
 
 
-module "s3_bucket_dev" {
-  count      = terraform.workspace == "dev" ? 1 : 0
-
-  
-
-  source         = "./modules/s3-website-buckets"
-
-  s3_redirect_name         = "rhresume-${terraform.workspace}.com"
-  s3_web_name              = "www.rhresume-${terraform.workspace}.com"
-  # s3_redirect_host_name    = "d7dqdmvrp7o46.cloudfront.net"
-  s3_redirect_host_name    = module.distributions_dev[0].distribution_domain
-  origin_access_identity   = module.distributions_dev[0].origin_access_identity
-
-}
-
-module "distributions_dev" {
-  count      = terraform.workspace == "dev" ? 1 : 0
-
-  source         = "./modules/distributions"
-  
-  # index_html_etag = terraform.workspace == "default" ? module.s3_bucket[0].index_html_etag : 0
-  index_html_etag = module.s3_bucket_dev[0].index_html_etag
-  counter_js_etag = module.s3_bucket_dev[0].counter_js_etag
-  style_css_etag =  module.s3_bucket_dev[0].style_css_etag
-  s3_dist_alias = null
-  s3_redirect_dist_alias = null
-  s3_redirect_origin_id = module.s3_bucket_dev[0].s3_redirect_regional_dom_name
-  s3_redirect_website_endpoint = module.s3_bucket_dev[0].s3_redirect_website_endpoint
-  s3_origin_id = module.s3_bucket_dev[0].s3_regional_dom_name
-  acm_certificate_arn = null
-  cloudfront_default_certificate = true
-  ssl_support_method = null
-  minimum_protocol_version = null
-
-}
-
-module "actions_role" {
-  count      = terraform.workspace == "dev" ? 1 : 0
-
-  source     = "./modules/iam_resources/github_oidc" 
- 
-}
-
-
-
 module "actions_role_global" {
   count      = terraform.workspace == "global" ? 1 : 0
 
@@ -124,6 +135,7 @@ module "actions_role_global" {
   }
  
 }
+
 
 
 
