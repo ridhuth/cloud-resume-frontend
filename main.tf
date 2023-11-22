@@ -46,8 +46,7 @@ module "s3_bucket_dev" {
 
   s3_redirect_name         = "rhresume-${terraform.workspace}-${each.key}.com"
   s3_web_name              = "www.rhresume-${terraform.workspace}-${each.key}.com"
-  s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
-  origin_access_identity   = module.distributions_dev[each.key].origin_access_identity
+  
 
 }
 
@@ -65,10 +64,22 @@ module "s3_bucket_prod" {
 }
 
 
+module "s3_bucket_config_dev" {
+
+  for_each = local.pull_requests
+
+  s3_redirect_name         = module.s3_bucket_dev[each.key].s3_redirect_bucket_name
+  s3_web_name              = module.s3_bucket_dev[each.key].s3_bucket_name
+
+  s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
+  origin_access_identity   = module.distributions_dev[each.key].origin_access_identity
+
+}
+
 module "distributions_dev" {
   # count      = terraform.workspace == "dev" ? 1 : 0
   # for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
-  for_each   = module.s3_bucket_dev
+  for_each   = local.pull_requests
 
   source         = "./modules/distributions"
   
