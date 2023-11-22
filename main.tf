@@ -36,7 +36,7 @@ locals {
 module "s3_bucket_dev" {
   # count      = terraform.workspace == "dev" ? 1 : 0
   # for_each   = terraform.workspace == "dev" ? toset(["request 1","request 2"]) : 1
-  for_each   = terraform.workspace == "dev" ? toset(${{ steps.pull_request_list.outputs.pull_requests }}) : 1
+  for_each   = terraform.workspace == "dev" ? toset(${var.pull_requests}) : 1
   
   source         = "./modules/s3-website-buckets"
 
@@ -63,7 +63,7 @@ module "s3_bucket_prod" {
 
 module "distributions_dev" {
   # count      = terraform.workspace == "dev" ? 1 : 0
-  for_each   = terraform.workspace == "dev" ? toset(${{ steps.pull_request_list.outputs.pull_requests }}) : 1
+  for_each   = terraform.workspace == "dev" ? toset(${var.pull_requests}) : 1
 
   source         = "./modules/distributions"
   
