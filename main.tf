@@ -46,8 +46,8 @@ module "s3_bucket_dev" {
 
   s3_redirect_name         = "rhresume-${terraform.workspace}.com"
   s3_web_name              = "www.rhresume-${terraform.workspace}.com"
-  s3_redirect_host_name    = module.distributions_dev[0].distribution_domain
-  origin_access_identity   = module.distributions_dev[0].origin_access_identity
+  s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
+  origin_access_identity   = module.distributions_dev[each.key].origin_access_identity
 
 }
 
@@ -72,14 +72,14 @@ module "distributions_dev" {
 
   source         = "./modules/distributions"
   
-  index_html_etag = module.s3_bucket_dev[0].index_html_etag
-  counter_js_etag = module.s3_bucket_dev[0].counter_js_etag
-  style_css_etag =  module.s3_bucket_dev[0].style_css_etag
+  index_html_etag = module.s3_bucket_dev[each.key].index_html_etag
+  counter_js_etag = module.s3_bucket_dev[each.key].counter_js_etag
+  style_css_etag =  module.s3_bucket_dev[each.key].style_css_etag
   s3_dist_alias = null
   s3_redirect_dist_alias = null
-  s3_redirect_origin_id = module.s3_bucket_dev[0].s3_redirect_regional_dom_name
-  s3_redirect_website_endpoint = module.s3_bucket_dev[0].s3_redirect_website_endpoint
-  s3_origin_id = module.s3_bucket_dev[0].s3_regional_dom_name
+  s3_redirect_origin_id = module.s3_bucket_dev[each.key].s3_redirect_regional_dom_name
+  s3_redirect_website_endpoint = module.s3_bucket_dev[each.key].s3_redirect_website_endpoint
+  s3_origin_id = module.s3_bucket_dev[each.key].s3_regional_dom_name
   acm_certificate_arn = null
   cloudfront_default_certificate = true
   ssl_support_method = null
