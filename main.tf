@@ -29,13 +29,18 @@ variable "pull_requests" {
   type        = list(string)
 }
 
+locals {
+  pull_requests = [
+    toset(var.pull_requests),1
+  ][terraform.workspace == "dev" ? 0 : 1 ]
+}
 
 
 
 module "s3_bucket_dev" {
   # count      = terraform.workspace == "dev" ? 1 : 0
-  # for_each   = terraform.workspace == "dev" ? toset(["request 1","request 2"]) : 1
-  for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
+  # for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
+  for_each   = local.pull_requests
   
   source         = "./modules/s3-website-buckets"
 
@@ -62,7 +67,8 @@ module "s3_bucket_prod" {
 
 module "distributions_dev" {
   # count      = terraform.workspace == "dev" ? 1 : 0
-  for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
+  # for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
+  for_each   = local.pull_requests
 
   source         = "./modules/distributions"
   
