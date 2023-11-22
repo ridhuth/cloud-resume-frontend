@@ -68,7 +68,7 @@ module "s3_bucket_prod" {
 module "distributions_dev" {
   # count      = terraform.workspace == "dev" ? 1 : 0
   # for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
-  for_each   = local.pull_requests
+  for_each   = module.s3_bucket_dev
 
   source         = "./modules/distributions"
   
