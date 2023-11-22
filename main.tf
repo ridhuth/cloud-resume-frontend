@@ -26,7 +26,7 @@ data "aws_caller_identity" "dev" {
 
 variable "pull_requests" {
   description = "list of open pull_requests."
-  type        = list(number)
+  type        = list(string)
 }
 
 
