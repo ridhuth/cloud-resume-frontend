@@ -29,9 +29,9 @@ output "s3_redirect_website_endpoint" {
 }
 
 output "s3_bucket_name" {
-  value = aws_s3_bucket.wwwrhresume_bucket.name
+  value = aws_s3_bucket.wwwrhresume_bucket.id
 }
 
 output "s3_redirect_bucket_name" {
-  value = aws_s3_bucket.rhresume_bucket.name
+  value = aws_s3_bucket.rhresume_bucket.id
 }
