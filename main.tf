@@ -50,6 +50,7 @@ module "s3_bucket_dev" {
 
 }
 
+/*
 module "s3_bucket_prod" {
   count      = terraform.workspace == "prod" ? 1 : 0
 
@@ -62,6 +63,7 @@ module "s3_bucket_prod" {
   origin_access_identity   = module.distributions_prod[0].origin_access_identity
 
 }
+*/
 
 
 module "s3_bucket_config_dev" {
@@ -100,6 +102,7 @@ module "distributions_dev" {
 
 }
 
+/*
 module "distributions_prod" {
   count      = terraform.workspace == "prod" ? 1 : 0
 
@@ -119,7 +122,7 @@ module "distributions_prod" {
   minimum_protocol_version = "TLSv1.2_2021"
 
 }
-
+*/
 
 
 
