@@ -60,7 +60,7 @@ module "s3_bucket_config_dev" {
   s3_web_name              = module.s3_bucket_dev[each.key].s3_bucket_name
 
   s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
-  origin_access_identity   = module.distributions_dev[each.key].origin_access_identity
+  origin_access_identity   = module.distributions_access_dev[each.key].origin_access_identity
 
 }
 
@@ -82,6 +82,15 @@ module "distributions_invalidation_dev" {
   counter_js_etag = module.s3_objects_dev[each.key].counter_js_etag
   style_css_etag =  module.s3_objects_dev[each.key].style_css_etag
   redirect_distribution_id = module.distributions_dev[each.key].redirect_distribution_id
+
+}
+
+module "distributions_access_dev" {
+
+  source    = "./modules/distributions-acess"
+  for_each  = local.pull_requests
+
+  s3_origin_id = module.s3_bucket_dev[each.key].s3_regional_dom_name
 
 }
 
