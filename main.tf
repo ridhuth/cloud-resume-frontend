@@ -87,7 +87,7 @@ module "distributions_invalidation_dev" {
 
 module "distributions_access_dev" {
 
-  source    = "./modules/distributions-acess"
+  source    = "./modules/distributions-access"
   for_each  = local.pull_requests
 
   s3_origin_id = module.s3_bucket_dev[each.key].s3_regional_dom_name
