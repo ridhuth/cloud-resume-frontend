@@ -73,6 +73,18 @@ module "s3_objects_dev" {
 
 }
 
+module "distributions_invalidation_dev" {
+  
+  source    = "./modules/distributions-invalidation"
+  for_each  = local.pull_requests
+
+  index_html_etag = module.s3_objects_dev[each.key].index_html_etag
+  counter_js_etag = module.s3_objects_dev[each.key].counter_js_etag
+  style_css_etag =  module.s3_objects_dev[each.key].style_css_etag
+  redirect_distribution_id = module.distributions_dev[each.key].redirect_distribution_id
+
+}
+
 module "distributions_dev" {
 
   # count      = terraform.workspace == "dev" ? 1 : 0
@@ -81,9 +93,7 @@ module "distributions_dev" {
 
   source         = "./modules/distributions"
   
-  index_html_etag = module.s3_objects_dev[each.key].index_html_etag
-  counter_js_etag = module.s3_objects_dev[each.key].counter_js_etag
-  style_css_etag =  module.s3_objects_dev[each.key].style_css_etag
+
   s3_dist_alias = null
   s3_redirect_dist_alias = null
   s3_redirect_origin_id = module.s3_bucket_dev[each.key].s3_redirect_regional_dom_name
