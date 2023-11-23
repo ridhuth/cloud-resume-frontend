@@ -11,3 +11,21 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
+
+provider "aws" {
+  alias  = "dev"
+  profile = "dev"
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "global"
+  profile = "global"
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "prod"
+  profile = "prod"
+  region = "us-east-1"
+}

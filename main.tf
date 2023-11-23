@@ -1,20 +1,4 @@
-provider "aws" {
-  alias  = "dev"
-  profile = "dev"
-  region = "us-east-1"
-}
 
-provider "aws" {
-  alias  = "global"
-  profile = "global"
-  region = "us-east-1"
-}
-
-provider "aws" {
-  alias  = "prod"
-  profile = "prod"
-  region = "us-east-1"
-}
 
 data "aws_caller_identity" "global" {
   provider = aws.global
@@ -80,16 +64,26 @@ module "s3_bucket_config_dev" {
 
 }
 
+module "s3_objects_dev" {
+
+  source         = "./modules/s3-objects"
+  for_each       = module.s3_bucket_dev
+
+
+
+}
+
 module "distributions_dev" {
+
   # count      = terraform.workspace == "dev" ? 1 : 0
   # for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
   for_each   = local.pull_requests
 
   source         = "./modules/distributions"
   
-  index_html_etag = module.s3_bucket_dev[each.key].index_html_etag
-  counter_js_etag = module.s3_bucket_dev[each.key].counter_js_etag
-  style_css_etag =  module.s3_bucket_dev[each.key].style_css_etag
+  index_html_etag = module.s3_objects_dev[each.key].index_html_etag
+  counter_js_etag = module.s3_objects_dev[each.key].counter_js_etag
+  style_css_etag =  module.s3_objects_dev[each.key].style_css_etag
   s3_dist_alias = null
   s3_redirect_dist_alias = null
   s3_redirect_origin_id = module.s3_bucket_dev[each.key].s3_redirect_regional_dom_name
@@ -99,6 +93,7 @@ module "distributions_dev" {
   cloudfront_default_certificate = true
   ssl_support_method = null
   minimum_protocol_version = null
+
 
 }
 
