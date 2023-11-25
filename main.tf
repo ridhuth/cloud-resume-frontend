@@ -61,7 +61,7 @@ module "s3_bucket_config_dev" {
   s3_web_name              = module.s3_bucket_dev[each.key].s3_bucket_name
 
   # s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
-  s3_redirect_host_name    = data.aws_cloudfront_distribution.distribution_domain_dev[each.key].domain_name
+  s3_redirect_host_name    = terraform_data.distributions_domain_dev[each.key].output
   origin_access_identity   = module.distributions_access_dev[each.key].origin_access_identity
 
 }
@@ -97,10 +97,21 @@ module "distributions_access_dev" {
 
 }
 
-data "aws_cloudfront_distribution" "distribution_domain_dev" {
+resource "terraform_data" "distribution_domain_dev" {
 
   for_each = module.distributions_dev
-  id = module.distributions_dev[each.key].distribution_id
+
+  input = module.distributions_dev.distribution_domain
+
+  /*
+  triggers_replace = module.distributions_dev.distribution_domain
+
+  provisioner "local-exec" {
+
+    command = "
+
+  }
+  */
 
 }
 
