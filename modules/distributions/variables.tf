@@ -44,6 +44,11 @@ variable "minimum_protocol_version" {
   type = string
 }
 
+variable "cloudfront_access_identity_path" {
+  description="origin access identity"
+  type = string
+}
+
 
 
 

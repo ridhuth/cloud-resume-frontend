@@ -123,7 +123,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     origin_id                = var.s3_redirect_origin_id
     origin_path              = null
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.origin_access.cloudfront_access_identity_path
+      origin_access_identity = var.cloudfront_access_identity_path
     }
   }
   restrictions {

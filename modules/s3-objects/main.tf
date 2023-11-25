@@ -1,5 +1,5 @@
 resource "aws_s3_object" "object" {
-  bucket = aws_s3_bucket.wwwrhresume_bucket.id
+  bucket = var.s3_web_name
   key    = "index.html"
   source = "index.html"
   content_type = "text/html"
@@ -9,7 +9,7 @@ resource "aws_s3_object" "object" {
 }
 
 resource "aws_s3_object" "visitor_counter_object" {
-  bucket = aws_s3_bucket.wwwrhresume_bucket.id
+  bucket = var.s3_web_name
   key    = "script/visitorCounter.js"
   source = "script/visitorCounter.js"
   content_type = "text/javascript"
@@ -20,7 +20,7 @@ resource "aws_s3_object" "visitor_counter_object" {
 }
 
 resource "aws_s3_object" "style_object" {
-  bucket = aws_s3_bucket.wwwrhresume_bucket.id
+  bucket = var.s3_web_name
   key    = "style/style.css"
   source = "style/style.css"
   content_type = "text/css"

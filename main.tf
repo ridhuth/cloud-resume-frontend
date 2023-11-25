@@ -71,6 +71,8 @@ module "s3_objects_dev" {
   source         = "./modules/s3-objects"
   for_each       = module.s3_bucket_dev
 
+  s3_web_name = module.s3_bucket_dev[each.key].s3_bucket_name
+
 
 }
 
@@ -133,6 +135,7 @@ module "distributions_dev" {
   cloudfront_default_certificate = true
   ssl_support_method = null
   minimum_protocol_version = null
+  cloudfront_access_identity_path = module.distributions_access_dev[each.key].origin_access_identity_path
 
 
 }
