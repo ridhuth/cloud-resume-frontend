@@ -60,8 +60,8 @@ module "s3_bucket_config_dev" {
   s3_redirect_name         = module.s3_bucket_dev[each.key].s3_redirect_bucket_name
   s3_web_name              = module.s3_bucket_dev[each.key].s3_bucket_name
   # s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
-  # s3_redirect_host_name    = "www.rhresume.com"
-  s3_redirect_host_name    = terraform_data.distribution_domain_dev.output
+  s3_redirect_host_name    = ""
+  # s3_redirect_host_name    = terraform_data.distribution_domain_dev.output
   origin_access_identity   = module.distributions_access_dev[each.key].origin_access_identity
 
 
@@ -105,6 +105,8 @@ resource "terraform_data" "distribution_domain_dev" {
   for_each = module.distributions_dev
 
   input = module.distributions_dev[each.key].distribution_domain
+
+  
 
   /*
   triggers_replace = module.distributions_dev.distribution_domain
