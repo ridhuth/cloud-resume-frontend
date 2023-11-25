@@ -22,6 +22,7 @@ locals {
 
 
 module "s3_bucket_dev" {
+
   # count      = terraform.workspace == "dev" ? 1 : 0
   # for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
   for_each   = local.pull_requests
@@ -31,7 +32,6 @@ module "s3_bucket_dev" {
   s3_redirect_name         = "rhresume-${terraform.workspace}-${each.key}.com"
   s3_web_name              = "www.rhresume-${terraform.workspace}-${each.key}.com"
   
-
 }
 
 /*
@@ -50,6 +50,7 @@ module "s3_bucket_prod" {
 */
 
 
+
 module "s3_bucket_config_dev" {
 
   source         = "./modules/s3-website-config"
@@ -60,6 +61,7 @@ module "s3_bucket_config_dev" {
   s3_web_name              = module.s3_bucket_dev[each.key].s3_bucket_name
 
   s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
+  s3_redirect_host_name    = data.aws_cloudfront_distribution.distribution_domain_dev[each.key].domain_name
   origin_access_identity   = module.distributions_access_dev[each.key].origin_access_identity
 
 }
@@ -70,8 +72,9 @@ module "s3_objects_dev" {
   for_each       = module.s3_bucket_dev
 
 
-
 }
+
+
 
 module "distributions_invalidation_dev" {
   
@@ -91,6 +94,13 @@ module "distributions_access_dev" {
   for_each  = local.pull_requests
 
   s3_origin_id = module.s3_bucket_dev[each.key].s3_regional_dom_name
+
+}
+
+data "aws_cloudfront_distribution" "distribution_domain_dev" {
+
+  for_each = module.distributions_dev
+  id = module.distributions_dev[each.key].distribution_id
 
 }
 

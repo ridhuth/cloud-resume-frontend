@@ -14,7 +14,10 @@ output "distribution_domain" {
 }
 
 
-
 output "redirect_distribution_id" {
   value = aws_cloudfront_distribution.s3_redirect_distribution.id
+}
+
+output "distribution_id" {
+  value = aws_cloudfront_distribution.s3_distribution.id
 }
