@@ -106,6 +106,12 @@ resource "terraform_data" "distribution_domain_dev" {
 
   input = module.distributions_dev[each.key].distribution_domain
 
+  depends_on = [
+
+    module.distributions_dev
+
+  ]
+
   
 
   /*
