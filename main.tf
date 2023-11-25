@@ -66,7 +66,7 @@ module "s3_bucket_config_dev" {
 
   depends_on = [
 
-    module.distributions_dev[each.key]
+    module.distributions_dev
 
   ]
 
