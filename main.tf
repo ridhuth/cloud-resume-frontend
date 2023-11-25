@@ -64,12 +64,6 @@ module "s3_bucket_config_dev" {
   # s3_redirect_host_name    = terraform_data.distribution_domain_dev[each.key].output
   origin_access_identity   = module.distributions_access_dev[each.key].origin_access_identity
 
-  depends_on = [
-
-    module.distributions_dev
-
-  ]
-
 
 }
 
