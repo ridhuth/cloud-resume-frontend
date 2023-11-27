@@ -134,6 +134,15 @@ jobs:
               uses: actions/checkout@v3
               with:
                 ref: ''
+
+            - id: pull_request_list
+              name: create open pull_request list
+              env:
+                GH_TOKEN: ${{ github.token }}
+              run: |
+                pull_request_list=$(gh pr list --state open --jq 'map(.number)' --json number)
+                echo "$pull_request_list"
+                echo "pull_requests=$pull_request_list" >> "$GITHUB_OUTPUT"
       
             - name: configure aws credentials
               id: creds
