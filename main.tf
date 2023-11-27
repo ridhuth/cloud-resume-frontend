@@ -100,25 +100,23 @@ module "distributions_access_dev" {
 
 }
 
-/*
+
 resource "terraform_data" "distribution_domain_dev" {
 
   for_each = module.distributions_dev
 
-  input = module.distributions_dev[each.key].distribution_domain
+  # input = module.distributions_dev[each.key].distribution_domain
  
   
-  triggers_replace = module.distributions_dev.distribution_domain
+  triggers_replace = module.distributions_dev[each.key].distribution_domain
 
   provisioner "local-exec" {
-
-    command = "
-
+    command = "aws s3api put-bucket-website --bucket ${module.s3_bucket_dev[each.key].s3_redirect_bucket_name} --website-configuration RedirectAllRequestsTo --option HostName=${module.distributions_dev[each.key].distribution_domain},Protocol=https"
   }
   
 
 }
-*/
+
 
 module "distributions_dev" {
 
@@ -140,9 +138,7 @@ module "distributions_dev" {
   minimum_protocol_version = null
   cloudfront_access_identity_path = module.distributions_access_dev[each.key].origin_access_identity_path
 
-  provisioner "local-exec" {
-    command = "aws s3api put-bucket-website --bucket ${module.s3_bucket_dev.s3_redirect_bucket_name} --website-configuration RedirectAllRequestsTo --option HostName=${self.distribution_domain},Protocol=https"
-  }
+
 
 
 }
