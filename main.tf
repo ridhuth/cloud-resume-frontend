@@ -107,7 +107,7 @@ resource "terraform_data" "distribution_domain_dev" {
 
   input = module.distributions_dev[each.key].distribution_domain
  
-  /*
+  
   triggers_replace = module.distributions_dev.distribution_domain
 
   provisioner "local-exec" {
@@ -115,7 +115,7 @@ resource "terraform_data" "distribution_domain_dev" {
     command = "
 
   }
-  */
+  
 
 }
 */
