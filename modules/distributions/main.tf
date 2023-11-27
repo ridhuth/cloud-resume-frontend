@@ -84,7 +84,6 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
   }
 }
 
-
 resource "aws_cloudfront_distribution" "s3_distribution" {
   aliases                         = var.s3_dist_alias
   comment                         = null
