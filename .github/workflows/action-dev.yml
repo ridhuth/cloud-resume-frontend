@@ -24,7 +24,7 @@ jobs:
             - name: Git clone the repository
               uses: actions/checkout@v3
               with:
-                ref: dev
+                ref: ''
             
             - id: pull_request_list
               name: create open pull_request list
@@ -133,7 +133,7 @@ jobs:
             - name: Git clone the repository
               uses: actions/checkout@v3
               with:
-                ref: dev
+                ref: ''
       
             - name: configure aws credentials
               id: creds
