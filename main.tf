@@ -61,6 +61,7 @@ module "s3_bucket_config_dev" {
   s3_web_name              = module.s3_bucket_dev[each.key].s3_bucket_name
   s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
   # s3_redirect_host_name    = ""
+  
   origin_access_identity   = module.distributions_access_dev[each.key].origin_access_identity
 
 }
@@ -129,7 +130,9 @@ module "distributions_dev" {
   s3_dist_alias = null
   s3_redirect_dist_alias = null
   s3_redirect_origin_id = module.s3_bucket_dev[each.key].s3_redirect_regional_dom_name
-  # s3_redirect_website_endpoint = module.s3_bucket_config_dev[each.key].s3_redirect_website_endpoint
+  #FIX s3_redirect_website_endpoint = module.s3_bucket_config_dev[each.key].s3_redirect_website_endpoint
+  s3_redirect_website_endpoint = ${module.s3_bucket_dev[each.key].s3_redirect_bucket_name}.s3-website-us-east-1.amazonaws.com
+  # rhresume-dev-7.com.s3-website-us-east-1.amazonaws.com
   s3_origin_id = module.s3_bucket_dev[each.key].s3_regional_dom_name
   acm_certificate_arn = null
   cloudfront_default_certificate = true

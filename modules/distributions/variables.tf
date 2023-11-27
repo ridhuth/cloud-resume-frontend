@@ -19,12 +19,12 @@ variable "s3_redirect_origin_id" {
   type = string
 }
 
-/*
+
 variable "s3_redirect_website_endpoint" {
   description = "s3 origin website endpoint"
   type =  string
 }
-*/
+
 
 variable "acm_certificate_arn" {
   description = "acm_certificate_arn"
