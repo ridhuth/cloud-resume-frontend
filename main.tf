@@ -60,8 +60,8 @@ module "s3_bucket_config_dev" {
   s3_redirect_name         = module.s3_bucket_dev[each.key].s3_redirect_bucket_name
   s3_web_name              = module.s3_bucket_dev[each.key].s3_bucket_name
   # s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
-  # s3_redirect_host_name    = ""
-  s3_redirect_host_name    = terraform_data.distribution_domain_dev.output
+    s3_redirect_host_name    = ""
+  # s3_redirect_host_name    = terraform_data.distribution_domain_dev.output
   origin_access_identity   = module.distributions_access_dev[each.key].origin_access_identity
 
 
@@ -100,20 +100,13 @@ module "distributions_access_dev" {
 
 }
 
+/*
 resource "terraform_data" "distribution_domain_dev" {
 
   for_each = module.distributions_dev
 
   input = module.distributions_dev[each.key].distribution_domain
-
-  depends_on = [
-
-    module.distributions_dev
-
-  ]
-
-  
-
+ 
   /*
   triggers_replace = module.distributions_dev.distribution_domain
 
@@ -125,6 +118,7 @@ resource "terraform_data" "distribution_domain_dev" {
   */
 
 }
+*/
 
 module "distributions_dev" {
 
@@ -145,6 +139,10 @@ module "distributions_dev" {
   ssl_support_method = null
   minimum_protocol_version = null
   cloudfront_access_identity_path = module.distributions_access_dev[each.key].origin_access_identity_path
+
+  provisioner "local-exec" {
+    command = "aws s3api put-bucket-website --bucket ${module.s3_bucket_dev.s3_redirect_bucket_name} --website-configuration RedirectAllRequestsTo --option HostName=${self.distribution_domain},Protocol=https"
+  }
 
 
 }
