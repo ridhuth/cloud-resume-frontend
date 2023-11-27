@@ -99,7 +99,7 @@ module "distributions_access_dev" {
 
 }
 
-
+/*
 resource "terraform_data" "distribution_domain_dev" {
 
   for_each = module.distributions_dev
@@ -115,6 +115,7 @@ resource "terraform_data" "distribution_domain_dev" {
   
 
 }
+*/
 
 
 module "distributions_dev" {
