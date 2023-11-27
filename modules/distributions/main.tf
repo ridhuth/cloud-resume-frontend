@@ -55,6 +55,7 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
     origin_access_control_id = null
     origin_id                = var.s3_redirect_origin_id
     origin_path              = null
+    /*
     custom_origin_config {
       http_port                = 80
       https_port               = 443
@@ -62,6 +63,10 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
       origin_protocol_policy   = "http-only"
       origin_read_timeout      = 30
       origin_ssl_protocols     = ["TLSv1.2"]
+    }
+    */
+    s3_origin_config {
+      origin_access_identity = var.cloudfront_access_identity_path
     }
   }
   restrictions {
