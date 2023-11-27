@@ -50,7 +50,8 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
   origin {
     connection_attempts      = 3
     connection_timeout       = 10
-    domain_name              = var.s3_redirect_website_endpoint
+    # domain_name              = var.s3_redirect_website_endpoint
+    domain_name              = var.s3_redirect_origin_id
     origin_access_control_id = null
     origin_id                = var.s3_redirect_origin_id
     origin_path              = null
@@ -77,9 +78,6 @@ resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
     ssl_support_method             = var.ssl_support_method
   }
 }
-
-
-
 
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
@@ -110,7 +108,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     realtime_log_config_arn    = null
     response_headers_policy_id = null
     smooth_streaming           = false
-    target_origin_id           = var.s3_redirect_origin_id
+    target_origin_id           = var.s3_origin_id
     trusted_key_groups         = []
     trusted_signers            = []
     viewer_protocol_policy     = "redirect-to-https"
@@ -120,7 +118,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     connection_timeout       = 10
     domain_name              = var.s3_origin_id
     origin_access_control_id = null
-    origin_id                = var.s3_redirect_origin_id
+    origin_id                = var.s3_origin_id
     origin_path              = null
     s3_origin_config {
       origin_access_identity = var.cloudfront_access_identity_path
