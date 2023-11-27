@@ -55,7 +55,7 @@ module "s3_bucket_config_dev" {
 
   source         = "./modules/s3-website-config"
 
-  for_each = local.pull_requests
+  for_each = module.s3_bucket_dev
 
   s3_redirect_name         = module.s3_bucket_dev[each.key].s3_redirect_bucket_name
   s3_web_name              = module.s3_bucket_dev[each.key].s3_bucket_name
