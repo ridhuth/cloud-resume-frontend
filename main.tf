@@ -37,11 +37,11 @@ module "s3_bucket_dev" {
   
   source         = "./modules/s3-website-buckets"
 
-  # s3_redirect_name         = "rhresume-${terraform.workspace}-${each.key}.com"
-  # s3_web_name              = "www.rhresume-${terraform.workspace}-${each.key}.com"
+  s3_redirect_name         = "rhresume-${terraform.workspace}-${each.key}.com"
+  s3_web_name              = "www.rhresume-${terraform.workspace}-${each.key}.com"
 
-  s3_redirect_name         = terraform.workspace == "prod" ? "rhresume.com" : "rhresume-${terraform.workspace}-${each.key}.com"
-  s3_web_name              = terraform.workspace == "prod" ? "www.rhresume.com" :  "www.rhresume-${terraform.workspace}-${each.key}.com"
+  # s3_redirect_name         = terraform.workspace == "prod" ? "rhresume.com" : "rhresume-${terraform.workspace}-${each.key}.com"
+  # s3_web_name              = terraform.workspace == "prod" ? "www.rhresume.com" :  "www.rhresume-${terraform.workspace}-${each.key}.com"
   
 }
 
