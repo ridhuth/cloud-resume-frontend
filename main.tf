@@ -73,6 +73,10 @@ module "s3_bucket_config_dev" {
   s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
   origin_access_identity   = module.distributions_access_dev[each.key].origin_access_identity
 
+  depends_on = [
+    module.s3_bucket_dev[each.key]
+  ]
+
 }
 
 module "s3_objects_dev" {
