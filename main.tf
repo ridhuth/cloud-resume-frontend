@@ -23,7 +23,7 @@ locals {
 
 locals {
   pull_requests = [
-    1,toset(var.pull_requests)
+    toset(["prod"]),toset(var.pull_requests)
   ][terraform.workspace == "prod" ? 0 : 1 ]
 }
 
