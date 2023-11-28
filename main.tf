@@ -13,10 +13,18 @@ variable "pull_requests" {
   type        = list(string)
 }
 
+/*
 locals {
   pull_requests = [
     toset(var.pull_requests),1
   ][terraform.workspace == "dev" ? 0 : 1 ]
+}
+*/
+
+locals {
+  pull_requests = [
+    1,toset(var.pull_requests)
+  ][terraform.workspace == "prod" ? 0 : 1 ]
 }
 
 
@@ -24,7 +32,8 @@ locals {
 module "s3_bucket_dev" {
 
   # count      = terraform.workspace == "dev" ? 1 : 0
-  for_each   = terraform.workspace == "prod" ? 1 : local.pull_requests
+  # for_each   = terraform.workspace == "prod" ? 1 : local.pull_requests
+  for_each = local.pull_requests
   
   source         = "./modules/s3-website-buckets"
 
@@ -81,7 +90,7 @@ module "s3_objects_dev" {
 module "distributions_invalidation_dev" {
   
   source    = "./modules/distributions-invalidation"
-  for_each  = terraform.workspace == "prod" ? 1 : local.pull_requests
+  for_each = local.pull_requests
 
   index_html_etag = module.s3_objects_dev[each.key].index_html_etag
   counter_js_etag = module.s3_objects_dev[each.key].counter_js_etag
@@ -93,7 +102,7 @@ module "distributions_invalidation_dev" {
 module "distributions_access_dev" {
 
   source    = "./modules/distributions-access"
-  for_each  = terraform.workspace == "prod" ? 1 : local.pull_requests
+  for_each = local.pull_requests
 
   s3_origin_id = module.s3_bucket_dev[each.key].s3_regional_dom_name
 
@@ -104,7 +113,7 @@ module "distributions_dev" {
 
   # count      = terraform.workspace == "dev" ? 1 : 0
   # for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
-  for_each   = terraform.workspace == "prod" ? 1 : local.pull_requests
+  for_each = local.pull_requests
 
   source         = "./modules/distributions"
   
