@@ -11,7 +11,6 @@ output "s3_redirect_regional_dom_name" {
 }
 
 
-
 output "s3_bucket_name" {
   value = aws_s3_bucket.wwwrhresume_bucket.id
 }

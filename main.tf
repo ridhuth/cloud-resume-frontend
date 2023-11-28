@@ -24,13 +24,15 @@ locals {
 module "s3_bucket_dev" {
 
   # count      = terraform.workspace == "dev" ? 1 : 0
-  # for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
-  for_each   = local.pull_requests
+  for_each   = terraform.workspace == "prod" ? 1 : local.pull_requests
   
   source         = "./modules/s3-website-buckets"
 
-  s3_redirect_name         = "rhresume-${terraform.workspace}-${each.key}.com"
-  s3_web_name              = "www.rhresume-${terraform.workspace}-${each.key}.com"
+  # s3_redirect_name         = "rhresume-${terraform.workspace}-${each.key}.com"
+  # s3_web_name              = "www.rhresume-${terraform.workspace}-${each.key}.com"
+
+  s3_redirect_name         = terraform.workspace == "prod" ? "rhresume.com" : "rhresume-${terraform.workspace}-${each.key}.com"
+  s3_web_name              = terraform.workspace == "prod" ? "www.rhresume.com" :  "www.rhresume-${terraform.workspace}-${each.key}.com"
   
 }
 
@@ -60,8 +62,6 @@ module "s3_bucket_config_dev" {
   s3_redirect_name         = module.s3_bucket_dev[each.key].s3_redirect_bucket_name
   s3_web_name              = module.s3_bucket_dev[each.key].s3_bucket_name
   s3_redirect_host_name    = module.distributions_dev[each.key].distribution_domain
-  # s3_redirect_host_name    = ""
-  
   origin_access_identity   = module.distributions_access_dev[each.key].origin_access_identity
 
 }
@@ -81,7 +81,7 @@ module "s3_objects_dev" {
 module "distributions_invalidation_dev" {
   
   source    = "./modules/distributions-invalidation"
-  for_each  = local.pull_requests
+  for_each  = terraform.workspace == "prod" ? 1 : local.pull_requests
 
   index_html_etag = module.s3_objects_dev[each.key].index_html_etag
   counter_js_etag = module.s3_objects_dev[each.key].counter_js_etag
@@ -93,36 +93,18 @@ module "distributions_invalidation_dev" {
 module "distributions_access_dev" {
 
   source    = "./modules/distributions-access"
-  for_each  = local.pull_requests
+  for_each  = terraform.workspace == "prod" ? 1 : local.pull_requests
 
   s3_origin_id = module.s3_bucket_dev[each.key].s3_regional_dom_name
 
 }
-
-/*
-resource "terraform_data" "distribution_domain_dev" {
-
-  for_each = module.distributions_dev
-
-  # input = module.distributions_dev[each.key].distribution_domain
- 
-  
-  triggers_replace = module.distributions_dev[each.key].distribution_domain
-
-  provisioner "local-exec" {
-    command = "aws s3api put-bucket-website --bucket ${module.s3_bucket_dev[each.key].s3_redirect_bucket_name} --website-configuration RedirectAllRequestsTo --option HostName=${module.distributions_dev[each.key].distribution_domain},Protocol=https"
-  }
-  
-
-}
-*/
 
 
 module "distributions_dev" {
 
   # count      = terraform.workspace == "dev" ? 1 : 0
   # for_each   = terraform.workspace == "dev" ? toset(var.pull_requests) : 1
-  for_each   = local.pull_requests
+  for_each   = terraform.workspace == "prod" ? 1 : local.pull_requests
 
   source         = "./modules/distributions"
   
@@ -130,17 +112,14 @@ module "distributions_dev" {
   s3_dist_alias = null
   s3_redirect_dist_alias = null
   s3_redirect_origin_id = module.s3_bucket_dev[each.key].s3_redirect_regional_dom_name
-  # s3_redirect_website_endpoint = module.s3_bucket_config_dev[each.key].s3_redirect_website_endpoint
   ### workaround for cycle error ###
   s3_redirect_website_endpoint = "${module.s3_bucket_dev[each.key].s3_redirect_bucket_name}.s3-website-us-east-1.amazonaws.com"
   s3_origin_id = module.s3_bucket_dev[each.key].s3_regional_dom_name
-  acm_certificate_arn = null
-  cloudfront_default_certificate = true
-  ssl_support_method = null
-  minimum_protocol_version = null
+  acm_certificate_arn = terraform.workspace == "prod" ? module.distributions_dev[each.key].acm_certificate_arn : null
+  cloudfront_default_certificate = terraform.workspace == "prod" ? false : true
+  ssl_support_method = terraform.workspace == "prod" ? "sni-only" : null
+  minimum_protocol_version = terraform.workspace == "prod" ? "TLSv1.2_2021" : null
   cloudfront_access_identity_path = module.distributions_access_dev[each.key].origin_access_identity_path
-
-
 
 
 }
