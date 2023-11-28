@@ -1,7 +1,4 @@
-output "acm_certificate_arn" {
-  value       = terraform.workspace == "prod" ? aws_acm_certificate.cert[0].arn : null
-  description = "acm_certificate_arn"
-}
+
 
 output "redirect_distribution_domain" {
   value       = aws_cloudfront_distribution.s3_redirect_distribution.domain_name

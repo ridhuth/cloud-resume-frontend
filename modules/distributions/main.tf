@@ -1,23 +1,6 @@
 
 
-resource "aws_acm_certificate" "cert" {
-  count      = terraform.workspace == "prod" ? 1 : 0
 
-  certificate_authority_arn = null
-  certificate_body          = null
-  certificate_chain         = null
-  domain_name               = "rhresume.com"
-  early_renewal_duration    = null
-  key_algorithm             = "RSA_2048"
-  private_key               = null # sensitive
-  subject_alternative_names = ["*.rhresume.com", "rhresume.com"]
-  tags                      = {}
-  tags_all                  = {}
-  validation_method         = "DNS"
-  options {
-    certificate_transparency_logging_preference = "ENABLED"
-  }
-}
 
 
 resource "aws_cloudfront_distribution" "s3_redirect_distribution" {
