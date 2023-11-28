@@ -124,7 +124,7 @@ module "distributions_dev" {
   ### workaround for cycle error ###
   s3_redirect_website_endpoint = "${module.s3_bucket_dev[each.key].s3_redirect_bucket_name}.s3-website-us-east-1.amazonaws.com"
   s3_origin_id = module.s3_bucket_dev[each.key].s3_regional_dom_name
-  acm_certificate_arn = terraform.workspace == "prod" ? module.certicates[0].acm_certificate_arn : null
+  acm_certificate_arn = terraform.workspace == "prod" ? module.certificates[0].acm_certificate_arn : null
   cloudfront_default_certificate = terraform.workspace == "prod" ? false : true
   ssl_support_method = terraform.workspace == "prod" ? "sni-only" : null
   minimum_protocol_version = terraform.workspace == "prod" ? "TLSv1.2_2021" : null
