@@ -74,7 +74,7 @@ module "s3_bucket_config_dev" {
   origin_access_identity   = module.distributions_access_dev[each.key].origin_access_identity
 
   depends_on = [
-    module.s3_bucket_dev[each.key]
+    module.s3_bucket_dev
   ]
 
 }
