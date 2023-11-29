@@ -122,8 +122,8 @@ module "distributions_dev" {
   source         = "./modules/distributions"
   
 
-  s3_dist_alias = null
-  s3_redirect_dist_alias = null
+  s3_dist_alias = terraform.workspace == "prod" ? ["www.rhresume.com"] : null
+  s3_redirect_dist_alias = terraform.workspace == "prod" ? ["rhresume.com"] : null
   s3_redirect_origin_id = module.s3_bucket_dev[each.key].s3_redirect_regional_dom_name
   ### workaround for cycle error ###
   s3_redirect_website_endpoint = "${module.s3_bucket_dev[each.key].s3_redirect_bucket_name}.s3-website-us-east-1.amazonaws.com"
