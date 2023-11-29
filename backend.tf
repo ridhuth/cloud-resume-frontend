@@ -6,7 +6,7 @@ terraform {
     dynamodb_table = "rhresume_frontend_state_global"
     encrypt        = true
     profile        = "global"
-    
+
   }
 }
 

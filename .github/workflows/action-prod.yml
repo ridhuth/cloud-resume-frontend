@@ -110,7 +110,10 @@ jobs:
             - name: Terraform init
               run: |
                 terraform init
-                
+
+            - name: Terraform Validate
+              run: terraform validate -no-color
+               
             - name: Terraform plan
               run: |
                 terraform workspace select -or-create=true prod

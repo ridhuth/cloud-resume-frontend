@@ -1,31 +1,31 @@
 terraform {
-    required_providers {
-      aws = {
-        source = "hashicorp/aws"
-        version = "5.17.0"
-      }
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.17.0"
     }
   }
-  
+}
+
 
 provider "aws" {
   region = "us-east-1"
 }
 
 provider "aws" {
-  alias  = "dev"
+  alias   = "dev"
   profile = "dev"
-  region = "us-east-1"
+  region  = "us-east-1"
 }
 
 provider "aws" {
-  alias  = "global"
+  alias   = "global"
   profile = "global"
-  region = "us-east-1"
+  region  = "us-east-1"
 }
 
 provider "aws" {
-  alias  = "prod"
+  alias   = "prod"
   profile = "prod"
-  region = "us-east-1"
+  region  = "us-east-1"
 }
