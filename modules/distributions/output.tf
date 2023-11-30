@@ -18,3 +18,12 @@ output "redirect_distribution_id" {
 output "distribution_id" {
   value = aws_cloudfront_distribution.s3_distribution.id
 }
+
+output "redirect_distribution_hosted_zone_id" {
+  value = aws_cloudfront_distribution.s3_redirect_distribution.hosted_zone_id
+}
+
+output "distribution_hosted_zone_id" {
+  value = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+}
+

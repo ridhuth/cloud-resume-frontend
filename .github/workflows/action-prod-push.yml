@@ -223,4 +223,3 @@ jobs:
                   terraform workspace select -or-create=true prod
                   terraform apply -auto-approve -var="pull_requests=${{ steps.pull_request_list.outputs.pull_requests }}"
             
-        

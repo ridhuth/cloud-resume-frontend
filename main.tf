@@ -13,13 +13,6 @@ variable "pull_requests" {
   type        = list(string)
 }
 
-/*
-locals {
-  pull_requests = [
-    toset(var.pull_requests),1
-  ][terraform.workspace == "dev" ? 0 : 1 ]
-}
-*/
 
 locals {
   pull_requests = [
@@ -44,21 +37,6 @@ module "s3_bucket_dev" {
   # s3_web_name              = terraform.workspace == "prod" ? "www.rhresume.com" :  "www.rhresume-${terraform.workspace}-${each.key}.com"
 
 }
-
-/*
-module "s3_bucket_prod" {
-  count      = terraform.workspace == "prod" ? 1 : 0
-
-  source         = "./modules/s3-website-buckets"
-
-  
-  s3_redirect_name         = "rhresume.com"
-  s3_web_name              = "www.rhresume.com"
-  s3_redirect_host_name    = "www.rhresume.com"
-  origin_access_identity   = module.distributions_prod[0].origin_access_identity
-
-}
-*/
 
 
 
@@ -146,28 +124,16 @@ module "certificates" {
 
 }
 
-/*
-module "distributions_prod" {
-  count      = terraform.workspace == "prod" ? 1 : 0
+module "dns" {
 
-  source         = "./modules/distributions"
-  
-  index_html_etag = module.s3_bucket_prod[0].index_html_etag
-  counter_js_etag = module.s3_bucket_prod[0].counter_js_etag
-  style_css_etag =  module.s3_bucket_prod[0].style_css_etag
-  s3_dist_alias = ["www.rhresume.com"]
-  s3_redirect_dist_alias = ["rhresume.com"]
-  s3_redirect_origin_id = terraform.workspace == "prod" ? module.s3_bucket_prod[0].s3_redirect_regional_dom_name : 0
-  s3_redirect_website_endpoint = module.s3_bucket_prod[0].s3_redirect_website_endpoint
-  s3_origin_id = module.s3_bucket_prod[0].s3_regional_dom_name
-  acm_certificate_arn = module.distributions_prod[0].acm_certificate_arn
-  cloudfront_default_certificate = false
-  ssl_support_method = "sni-only"
-  minimum_protocol_version = "TLSv1.2_2021"
+  source = "./modules/dns"
+  count = terraform.workspace == "prod" ? 1 : 0
+  root_alias_name = module.distributions_dev["prod"].redirect_distribution_domain
+  www_alias_name = module.distributions_dev["prod"].distribution_domain
+  root_target_zone_id = module.distributions_dev["prod"].redirect_distribution_hosted_zone_id
+  www_target_zone_id = module.distributions_dev["prod"].distribution_hosted_zone_id
 
 }
-*/
-
 
 
 ### ONE OIDC ACTION ROLE PER ACCOUNT ###
