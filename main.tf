@@ -24,8 +24,6 @@ locals {
 
 module "s3_bucket_dev" {
 
-  # count      = terraform.workspace == "dev" ? 1 : 0
-  # for_each   = terraform.workspace == "prod" ? 1 : local.pull_requests
   for_each = local.pull_requests
 
   source = "./modules/s3-website-buckets"
