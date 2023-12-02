@@ -217,5 +217,14 @@ jobs:
                   terraform init
                   terraform workspace select -or-create=true dev
                   terraform apply -auto-approve -var="pull_requests=${{ steps.pull_request_list.outputs.pull_requests }}"
+                  
+            - name: Terraform Output
+              run: |
+                  echo "This is the distribution for root domain"
+                  terraform output redirect_distribution_domain
+                  echo "This is the distribution for www subdomain"
+                  terraform output distribution_domain
+
+
             
         
