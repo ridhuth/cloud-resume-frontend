@@ -124,12 +124,12 @@ module "certificates" {
 
 module "dns" {
 
-  source = "./modules/dns"
-  count = terraform.workspace == "prod" ? 1 : 0
-  root_alias_name = module.distributions_dev["prod"].redirect_distribution_domain
-  www_alias_name = module.distributions_dev["prod"].distribution_domain
+  source              = "./modules/dns"
+  count               = terraform.workspace == "prod" ? 1 : 0
+  root_alias_name     = module.distributions_dev["prod"].redirect_distribution_domain
+  www_alias_name      = module.distributions_dev["prod"].distribution_domain
   root_target_zone_id = module.distributions_dev["prod"].redirect_distribution_hosted_zone_id
-  www_target_zone_id = module.distributions_dev["prod"].distribution_hosted_zone_id
+  www_target_zone_id  = module.distributions_dev["prod"].distribution_hosted_zone_id
 
 }
 
