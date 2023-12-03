@@ -1,7 +1,7 @@
 output "redirect_distribution_domain" {
 
   value = [
-    for k in module.distributions_dev : k.s3_redirect_website_endpoint
+    for k in module.distributions_dev : k.redirect_distribution_domain
   ]
   description = "Domain name corresponding to the distribution. For example: d604721fxaaqy9.cloudfront.net"
 
