@@ -1,4 +1,4 @@
-name: Cloud Resume Frontend Push Main
+name: Cloud Resume Frontend Push to Main
 
 run-name: Deploy to AWS by @${{ github.actor }}
 
