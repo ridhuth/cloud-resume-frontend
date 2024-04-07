@@ -287,9 +287,9 @@ jobs:
           
           - name: Add prod profile credentials to ~/.aws/credentials
             run: |
-              aws configure set aws_access_key_id ${{ steps.dev_creds.outputs.aws-access-key-id }} --profile prod
-              aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile prod
-              aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile prod
+              aws configure set aws_access_key_id ${{ steps.prod_creds.outputs.aws-access-key-id }} --profile prod
+              aws configure set aws_secret_access_key ${{ steps.prod_creds.outputs.aws-secret-access-key }} --profile prod
+              aws configure set aws_session_token ${{ steps.prod_creds.outputs.aws-session-token }} --profile prod
 
           - name: configure dev aws credentials
             id: dev_creds
@@ -302,9 +302,9 @@ jobs:
           
           - name: Add dev profile credentials to ~/.aws/credentials
             run: |
-              aws configure set aws_access_key_id ${{ steps.prod_creds.outputs.aws-access-key-id }} --profile dev
-              aws configure set aws_secret_access_key ${{ steps.prod_creds.outputs.aws-secret-access-key }} --profile dev
-              aws configure set aws_session_token ${{ steps.prod_creds.outputs.aws-session-token }} --profile dev 
+              aws configure set aws_access_key_id ${{ steps.dev_creds.outputs.aws-access-key-id }} --profile dev
+              aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile dev
+              aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile dev 
               
           - name: Create Backend.tf
             run: |
