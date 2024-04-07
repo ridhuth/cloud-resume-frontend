@@ -232,6 +232,9 @@ jobs:
                 terraform output distribution_domain
 
   terraform_plan_destroy:
+    
+    needs: ['terraform_plan']
+    
 
     if: github.event.pull_request.merged == true
 
