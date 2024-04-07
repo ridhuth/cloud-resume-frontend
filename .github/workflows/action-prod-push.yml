@@ -388,21 +388,6 @@ jobs:
             aws configure set aws_session_token ${{ steps.creds.outputs.aws-session-token }} --profile global                    
 
         - name: configure aws credentials
-          id: dev_creds
-          uses: aws-actions/configure-aws-credentials@v3
-          with:
-            role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-            role-duration-seconds: 3600
-            aws-region: us-east-1
-            output-credentials: true
-        
-        - name: Add dev profile credentials to ~/.aws/credentials
-          run: |
-            aws configure set aws_access_key_id ${{ steps.dev_creds.outputs.aws-access-key-id }} --profile dev
-            aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile dev
-            aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile dev
-            
-        - name: configure prod aws credentials
           id: prod_creds
           uses: aws-actions/configure-aws-credentials@v3
           with:
@@ -410,12 +395,27 @@ jobs:
             role-duration-seconds: 3600
             aws-region: us-east-1
             output-credentials: true
-  
+        
         - name: Add prod profile credentials to ~/.aws/credentials
           run: |
             aws configure set aws_access_key_id ${{ steps.prod_creds.outputs.aws-access-key-id }} --profile prod
             aws configure set aws_secret_access_key ${{ steps.prod_creds.outputs.aws-secret-access-key }} --profile prod
             aws configure set aws_session_token ${{ steps.prod_creds.outputs.aws-session-token }} --profile prod
+            
+        - name: configure dev aws credentials
+          id: dev_creds
+          uses: aws-actions/configure-aws-credentials@v3
+          with:
+            role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+            role-duration-seconds: 3600
+            aws-region: us-east-1
+            output-credentials: true
+  
+        - name: Add dev profile credentials to ~/.aws/credentials
+          run: |
+            aws configure set aws_access_key_id ${{ steps.dev_creds.outputs.aws-access-key-id }} --profile dev
+            aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile dev
+            aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile dev
 
         - name: Create Backend.tf
           run: |
