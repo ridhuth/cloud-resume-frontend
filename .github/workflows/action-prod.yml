@@ -230,6 +230,116 @@ jobs:
                   terraform output redirect_distribution_domain
                   echo "This is the distribution for www subdomain"
                   terraform output distribution_domain
+
+    terraform_plan_destroy:
+
+      if: github.event.pull_request.merged == true
+    
+      runs-on: ubuntu-latest
+
+      defaults:
+        run:
+          working-directory: ./
+
+      permissions:
+          id-token: write # This is required for requesting the JWT
+          contents: read  # This is required for actions/checkout
+      
+      steps:
+          - name: Git clone the repository
+            uses: actions/checkout@v3
+            with:
+              ref: ''
+          
+          - id: pull_request_list
+            name: create open pull_request list
+            env:
+              GH_TOKEN: ${{ github.token }}
+            run: |
+              pull_request_list=$(gh pr list --state open --jq 'map(.number)' --json number)
+              echo "$pull_request_list"
+              echo "pull_requests=$pull_request_list" >> "$GITHUB_OUTPUT"
+
+              
+          - name: configure global aws credentials
+            id: creds
+            uses: aws-actions/configure-aws-credentials@v3
+            with:
+              role-to-assume: ${{ secrets.ROLE_TO_ASSUME_GLOBAL }}
+              role-duration-seconds: 3600
+              aws-region: us-east-1
+              output-credentials: true
+          
+          - name: Add global profile credentials to ~/.aws/credentials
+            run: |
+              aws configure set aws_access_key_id ${{ steps.creds.outputs.aws-access-key-id }} --profile global
+              aws configure set aws_secret_access_key ${{ steps.creds.outputs.aws-secret-access-key }} --profile global
+              aws configure set aws_session_token ${{ steps.creds.outputs.aws-session-token }} --profile global    
+
+          - name: configure prod aws credentials
+            id: prod_creds
+            uses: aws-actions/configure-aws-credentials@v3
+            with:
+              role-to-assume: ${{ secrets.ROLE_TO_ASSUME_PROD }}
+              role-duration-seconds: 3600
+              aws-region: us-east-1
+              output-credentials: true
+          
+          - name: Add prod profile credentials to ~/.aws/credentials
+            run: |
+              aws configure set aws_access_key_id ${{ steps.dev_creds.outputs.aws-access-key-id }} --profile prod
+              aws configure set aws_secret_access_key ${{ steps.dev_creds.outputs.aws-secret-access-key }} --profile prod
+              aws configure set aws_session_token ${{ steps.dev_creds.outputs.aws-session-token }} --profile prod
+
+          - name: configure dev aws credentials
+            id: dev_creds
+            uses: aws-actions/configure-aws-credentials@v3
+            with:
+              role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+              role-duration-seconds: 3600
+              aws-region: us-east-1
+              output-credentials: true
+          
+          - name: Add dev profile credentials to ~/.aws/credentials
+            run: |
+              aws configure set aws_access_key_id ${{ steps.prod_creds.outputs.aws-access-key-id }} --profile dev
+              aws configure set aws_secret_access_key ${{ steps.prod_creds.outputs.aws-secret-access-key }} --profile dev
+              aws configure set aws_session_token ${{ steps.prod_creds.outputs.aws-session-token }} --profile dev 
+              
+          - name: Create Backend.tf
+            run: |
+              cat << EOF > backend.tf
+              terraform {
+                backend "s3" {
+                  bucket         = "rhresume-frontend-bucket-remote-state-global"
+                  key            = "terraform.tfstate"
+                  region         = "us-east-1"
+                  dynamodb_table = "rhresume_frontend_state_global"
+                  encrypt        = true
+                  access_key     = "${{ steps.creds.outputs.aws-access-key-id }}"
+                  secret_key     = "${{ steps.creds.outputs.aws-secret-access-key }}"
+                  token          = "${{ steps.creds.outputs.aws-session-token }}"
+                }
+              }
+              EOF
+                              
+  
+          - name: Use Terraform 1.5.7
+            uses: hashicorp/setup-terraform@v2
+            with:
+              terraform_version: 1.5.7
+  
+          - name: Terraform init
+            run: |
+              terraform init
+
+          - name: Terraform Validate
+            run: terraform validate -no-color
+              
+          - name: Terraform plan
+            run: |
+              terraform workspace select -or-create=true dev
+              terraform plan -var="pull_requests=${{ steps.pull_request_list.outputs.pull_requests }}"
       
     
     terraform_destroy:
