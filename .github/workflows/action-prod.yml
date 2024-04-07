@@ -1,4 +1,4 @@
-name: Cloud Resume Frontend
+name: Cloud Resume Frontend Prod
 
 run-name: Deploy to AWS by @${{ github.actor }}
 
