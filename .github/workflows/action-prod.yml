@@ -121,7 +121,7 @@ jobs:
             
 
   terraform_apply:
-      needs: ['terraform_plan']
+      needs: ['terraform_plan_destroy']
   
       runs-on: ubuntu-latest
   
