@@ -343,7 +343,7 @@ jobs:
       
     
     terraform_destroy:
-      needs: ['terraform_plan']
+      needs: ['terraform_plan_destroy']
 
       runs-on: ubuntu-latest
 
