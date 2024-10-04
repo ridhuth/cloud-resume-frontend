@@ -31,8 +31,8 @@ jobs:
               env:
                 GH_TOKEN: ${{ github.token }}
               run: |
-                # pull_request_list=$(gh pr list --state open --jq 'map(.number)' --json number)
-                pull_request_list=[17]
+                pull_request_list=$(gh pr list --state open --jq 'map(.number)' --json number)
+                # pull_request_list=[17]
                 echo "$pull_request_list"
                 echo "pull_requests=$pull_request_list" >> "$GITHUB_OUTPUT"
 
@@ -141,8 +141,8 @@ jobs:
               env:
                 GH_TOKEN: ${{ github.token }}
               run: |
-                # pull_request_list=$(gh pr list --state open --jq 'map(.number)' --json number)
-                pull_request_list=[17]
+                pull_request_list=$(gh pr list --state open --jq 'map(.number)' --json number)
+                # pull_request_list=[17]
                 echo "$pull_request_list"
                 echo "pull_requests=$pull_request_list" >> "$GITHUB_OUTPUT"
       
