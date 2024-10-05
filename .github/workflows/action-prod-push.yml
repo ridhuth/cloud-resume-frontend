@@ -5,7 +5,7 @@ run-name: Deploy to AWS by @${{ github.actor }}
 on: 
   push:
     branches:
-      - none # change to main, when need to push directly to main
+      - none # change to main, when need to push directly to main, change action-prod.yml so workflow does not run simultaenously
 
 jobs:
   terraform_plan:
