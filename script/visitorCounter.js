@@ -1,4 +1,4 @@
-sessionStorage.setItem("viewed","true");
+
 
 
 function counter() {
@@ -16,4 +16,5 @@ fetch('https://y6v9mkpq3b.execute-api.us-east-1.amazonaws.com/default/updateDyna
 // See if we have a viewed value
 if (sessionStorage.getItem("viewed") === null) {
     counter();
+    sessionStorage.setItem("viewed","true");
 }
