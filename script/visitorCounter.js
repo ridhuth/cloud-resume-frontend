@@ -1,4 +1,4 @@
-let countField = document.getElementById("viewCount").innerHTML;
+let countField;
 
 
 function counter() {
@@ -7,6 +7,7 @@ function counter() {
     .then(response => response.json()) 
     .then(data => {
         console.log(data.Attributes["count"]["N"]);
+        document.getElementById("viewCount").innerHTML = data.Attributes["count"]["N"];
         countField = data.Attributes["count"]["N"];
         sessionStorage.setItem("count",countField);
      })
