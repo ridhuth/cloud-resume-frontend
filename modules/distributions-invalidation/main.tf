@@ -1,7 +1,7 @@
 # Invalidate the CF cache when S3 website home page is updated
 resource "null_resource" "invalidate_cf_cache" {
   provisioner "local-exec" {
-    command = "aws cloudfront create-invalidation --distribution-id ${var.redirect_distribution_id} --paths '/*'"
+    command = "aws cloudfront create-invalidation --distribution-id ${var.distribution_id} --paths '/*'"
   }
 
   triggers = {
@@ -13,7 +13,7 @@ resource "null_resource" "invalidate_cf_cache" {
 # Invalidate the CF cache when S3 website javascript is updated
 resource "null_resource" "invalidate_cf_js_cache" {
   provisioner "local-exec" {
-    command = "aws cloudfront create-invalidation --distribution-id ${var.redirect_distribution_id} --paths '/script/*'"
+    command = "aws cloudfront create-invalidation --distribution-id ${var.distribution_id} --paths '/script/*'"
   }
   triggers = {
     etag_changed = var.counter_js_etag
@@ -23,7 +23,7 @@ resource "null_resource" "invalidate_cf_js_cache" {
 # Invalidate the CF cache when S3 website style is updated
 resource "null_resource" "invalidate_cf_css_cache" {
   provisioner "local-exec" {
-    command = "aws cloudfront create-invalidation --distribution-id ${var.redirect_distribution_id} --paths '/style/*'"
+    command = "aws cloudfront create-invalidation --distribution-id ${var.distribution_id} --paths '/style/*'"
   }
   triggers = {
     etag_changed = var.style_css_etag

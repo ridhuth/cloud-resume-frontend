@@ -10,6 +10,6 @@ variable "style_css_etag" {
   description="style_css_etag"
 }
 
-variable "redirect_distribution_id" {
+variable "distribution_id" {
     description="distribution id"
 }

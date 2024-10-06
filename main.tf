@@ -75,7 +75,7 @@ module "distributions_invalidation_dev" {
   index_html_etag          = module.s3_objects_dev[each.key].index_html_etag
   counter_js_etag          = module.s3_objects_dev[each.key].counter_js_etag
   style_css_etag           = module.s3_objects_dev[each.key].style_css_etag
-  redirect_distribution_id = module.distributions_dev[each.key].redirect_distribution_id
+  distribution_id          = module.distributions_dev[each.key].distribution_id
 
 }
 
