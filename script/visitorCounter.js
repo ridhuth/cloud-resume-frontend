@@ -1,4 +1,4 @@
-let countField;
+let countField = document.getElementById("viewCount").innerHTML;
 
 
 function counter() {
@@ -7,8 +7,8 @@ function counter() {
     .then(response => response.json()) 
     .then(data => {
         console.log(data.Attributes["count"]["N"]);
-        document.getElementById("viewCount").innerHTML = data.Attributes["count"]["N"];
-        return data.Attributes["count"]["N"];
+        countField = data.Attributes["count"]["N"];
+        sessionStorage.setItem("count",countField);
      })
     }
 
@@ -16,9 +16,8 @@ function counter() {
 
 // See if we have a viewed value
 if (sessionStorage.getItem("viewed") === null) {
-    countField = counter();
+    counter();
     // let countField = document.getElementById("viewCount").innerHTML;
-    sessionStorage.setItem("count",countField);
     sessionStorage.setItem("viewed","true");
 }
 else {
