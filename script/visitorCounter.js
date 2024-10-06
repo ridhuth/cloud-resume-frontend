@@ -1,8 +1,9 @@
 
 // See if we have a viewed value
 if (sessionStorage.getItem("viewed") === null) {
-    counter();
-    let countField = document.getElementById("viewCount").innerHTML;
+    let counter = counter();
+    // let countField = document.getElementById("viewCount").innerHTML;
+    let countField = counter["count"]["N"];
     sessionStorage.setItem("count",countField);
     sessionStorage.setItem("viewed","true");
 }
@@ -17,6 +18,7 @@ fetch('https://y6v9mkpq3b.execute-api.us-east-1.amazonaws.com/default/updateDyna
 .then(data => {
     console.log(data.Attributes["count"]["N"]);
     document.getElementById("viewCount").innerHTML = data.Attributes["count"]["N"];
+    return data;
  })
 }
 
