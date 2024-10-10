@@ -6,6 +6,7 @@ body{
 
 .flex_container{
     display:flex;
+    flex-direction: column;
     width: 816px;
     background-color: white;
     padding: 50px 8.28% 50px 8.28%;
@@ -25,6 +26,8 @@ body{
     width: 30%; 
     height: auto;
     padding: 0 0 0 20px;
+    display: flex;
+    flex-direction: row;
 }
 
 .side > ul{
