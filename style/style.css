@@ -10,32 +10,47 @@ body{
     width: 816px;
     background-color: white;
     padding: 50px 8.28% 50px 8.28%;
+    align-content: center;
+}
+
+.flex_container > * {
+    max-width: 600px;
+}
+
+header > h1 {
+    margin: 20px 0 5px 0;
+}
+
+header > h1 + p {
+    margin: 0 0 20px 0;
 }
 
 
 .main{
      
     height: auto;
-    padding: 0 20px 0 0;
     
 }
 
-.side{
-    
-    height: auto;
-    padding: 0 0 0 20px;
-    display: flex;
-    flex-direction: column;
+.main > div{
+    margin-bottom: 20px;
 }
 
-.side > ul{
-    padding: 0;
+
+.contacts {
+
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+
 }
 
-.side > div >ul{
-    padding: 0;
+.contacts > *{
+    padding-right: 4px;
+}
+
+.contacts > .column-2 > p {
+    margin-top: 0;
 }
 
 
@@ -45,6 +60,7 @@ h4{
 
 ul{
     list-style-type: none;
+    padding-left: 0;
 }
 
 li{
