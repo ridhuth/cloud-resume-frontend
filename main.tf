@@ -61,6 +61,7 @@ module "s3_objects_dev" {
   for_each = module.s3_bucket_dev
 
   s3_web_name = module.s3_bucket_dev[each.key].s3_bucket_name
+  counter_script = terraform.workspace == "prod" ? "script/visitorCounter.js" : "script/visitorCounterDev.js"
 
 
 }

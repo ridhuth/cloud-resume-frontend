@@ -10,13 +10,17 @@ resource "aws_s3_object" "object" {
 
 resource "aws_s3_object" "visitor_counter_object" {
   bucket = var.s3_web_name
-  key    = "script/visitorCounter.js"
-  source = "script/visitorCounter.js"
+  # key    = "script/visitorCounter.js"
+  # source = "script/visitorCounter.js"
+  key = var.counter_script
+  source = var.counter_script
   content_type = "text/javascript"
+  
   
 
 
-  etag = filemd5("script/visitorCounter.js")
+  # etag = filemd5("script/visitorCounter.js")
+  etag = filemd5(var.counter_script)
 }
 
 resource "aws_s3_object" "style_object" {
