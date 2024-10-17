@@ -20,7 +20,7 @@ module "iam_github_oidc_role" {
   version = "5.30.0"
 
   # This should be updated to suit your organization, repository, references/branches, etc.
-  subjects = ["repo:riddy92/cloud-resume-frontend:*"]
+  subjects = ["repo:ridhuth/cloud-resume-frontend:*"]
 
   policies = {
     additional = aws_iam_policy.additional.arn
